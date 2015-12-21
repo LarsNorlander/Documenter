@@ -6,6 +6,7 @@
 
 
 @section('body')
+    <!-- Navigation start -->
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -20,7 +21,9 @@
             </div>
         </div>
     </nav>
+    <!-- End of navigation -->
 
+    <!-- Sidebar start -->
     <div class="sidebar" id="no-content">
         <div id="no-content-text">
             Select a document to show it's info.
@@ -47,7 +50,7 @@
             <h4>Version</h4>
             <hr/>
             <div>
-                Version 1 : 12 Dec 2015
+
             </div>
         </div>
 
@@ -57,77 +60,32 @@
         </div>
 
         <div class="card">
-            Current Active Version: 1 <br/>
-            Total Number of Versions: 1 <br/>
-            File Size: 200kb
+            Current Active Version:  <br/>
+            Total Number of Versions:  <br/>
+            File Size:
         </div>
     </div>
+    <!-- End of sidebar -->
 
+    <!-- Area where list of files would be displayed -->
     <div class="file-list">
+        <!-- File header -->
         <div class="file-header">
             Memos
         </div>
-
+        <!-- File item -->
         <div class="file-item">
-            <div class="file-name">Community Mass</div>
-            <div class="file-owner">CCF</div>
-            <div class="file-edited">11 Dec 2015</div>
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">No Classes</div>
-            <div class="file-owner">AUF</div>
-            <div class="file-edited">14 Dec 2015</div>
-        </div>
-
-        <div class="file-header">
-            Documents
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">Class Curriculum</div>
-            <div class="file-owner">Me</div>
-            <div class="file-edited">12 Dec 2015</div>
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">References</div>
-            <div class="file-owner">Me</div>
-            <div class="file-edited">12 Dec 2015</div>
-        </div>
-
-        <div class="file-header">
-            Certifications And Awards
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">Google Apps for Education</div>
-            <div class="file-owner">Me</div>
-            <div class="file-edited">03 Apr 2015</div>
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">PLDT Hackathon</div>
-            <div class="file-owner">Me</div>
-            <div class="file-edited">16 Apr 2015</div>
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">Swift iOS Training</div>
-            <div class="file-owner">Me</div>
-            <div class="file-edited">05 Dec 2015</div>
-        </div>
-
-        <div class="file-item">
-            <div class="file-name">Toro.io Hackathon</div>
-            <div class="file-owner">Me</div>
-            <div class="file-edited">15 Oct 2015</div>
+            <div class="file-name"></div>
+            <div class="file-owner"></div>
+            <div class="file-edited"></div>
         </div>
     </div>
+    <!-- End of file display section -->
 
 @endsection
 
 @section('footer')
+    <!-- Page Specific script. Will be moved to it's own file. -->
     <script>
         $("nav").css("background", "white");
 
