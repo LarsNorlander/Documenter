@@ -14,7 +14,7 @@ class CreateAllTables extends Migration {
         //Creates tbl_departments
         Schema::create('tbl_departments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('department_name');
+            $table->string('name');
             $table->timestamps();
         });
         //Creates tbl_user_types

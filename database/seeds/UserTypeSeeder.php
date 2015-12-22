@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UserTypeSeeder extends Seeder
-{
+class UserTypeSeeder extends Seeder {
     /**
      * Run the database seeds.
      *
@@ -12,5 +11,11 @@ class UserTypeSeeder extends Seeder
     public function run()
     {
         // Seeder for populating the UserTypeSeeder
+        DB::table('tbl_user_types')->insert([
+            ['name' => 'super_admin'],
+            ['name' => 'org_head'],
+            ['name' => 'dept_head'],
+            ['name' => 'dept_mem'],
+        ]);
     }
 }
