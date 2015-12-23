@@ -2,11 +2,11 @@
 
 @section('pageTitle')
     Files
-@endsection
+    @endsection
 
 
-@section('body')
-    <!-- Navigation start -->
+    @section('body')
+            <!-- Navigation start -->
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -15,7 +15,6 @@
             <div>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Upload New Document</a></li>
-                    <li><a href="#">New Folder</a></li>
                     <li id="logOut"><a><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
                 </ul>
             </div>
@@ -60,8 +59,8 @@
         </div>
 
         <div class="card">
-            Current Active Version:  <br/>
-            Total Number of Versions:  <br/>
+            Current Active Version: <br/>
+            Total Number of Versions: <br/>
             File Size:
         </div>
     </div>
@@ -73,19 +72,22 @@
         <div class="file-header">
             Memos
         </div>
-        <!-- File item -->
+
+        @foreach($files as $file)
+                <!-- File item -->
         <div class="file-item">
-            <div class="file-name"></div>
-            <div class="file-owner"></div>
-            <div class="file-edited"></div>
+            <div class="file-name">{{ $file->filename }}</div>
+            <div class="file-owner">{{ $file->owner_id }}</div>
+            <div class="file-edited">{{ $file->updated_at }}</div>
         </div>
+        @endforeach
     </div>
     <!-- End of file display section -->
 
-@endsection
+    @endsection
 
-@section('footer')
-    <!-- Page Specific script. Will be moved to it's own file. -->
+    @section('footer')
+            <!-- Page Specific script. Will be moved to it's own file. -->
     <script>
         $("nav").css("background", "white");
 
@@ -98,7 +100,7 @@
         $(".file-list").css("width", $(window).width() - 300 + "px")
 
         $("#logOut").click(function () {
-            window.open("..", "_self")
+            window.open("/logout", "_self")
         })
 
 

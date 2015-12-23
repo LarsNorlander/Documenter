@@ -19,18 +19,19 @@
                 </ul>
 
                 <!-- Login Form -->
-                <form class="navbar-form navbar-right" role="search" action="./files">
+                <form class="navbar-form navbar-right" method="post" action="/login">
+                    {!! csrf_field() !!}
                     <!-- Username -->
                     <div class="form-group">
                         <input type="text" class="form-control" name="username" placeholder="Username">
                     </div>
                     <!-- Password -->
                     <div class="form-group">
-                        <input type="password" class="form-control" name="password" placeholder="Password">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                     </div>
                     <!-- Login Button -->
                     <button id="signIn" type="submit" class="btn btn-default"><span
-                                class="glyphicon glyphicon-log-in"></span> Log In
+                                class="glyphicon glyphicon-log-in"></span> Login
                     </button>
                 </form>
                 <!-- End of Login Form -->
