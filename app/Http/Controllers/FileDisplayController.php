@@ -14,6 +14,6 @@ class FileDisplayController extends Controller {
     {
         $files = FileRecord::all();
 
-        return view('files.index', compact('files'));
+        return view('files.dashboard', compact('files'));
     }
 }

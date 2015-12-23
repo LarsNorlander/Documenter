@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     if(Auth::check())
-        return redirect('/files');
+        return redirect('/dashboard');
     else
         return view('welcome');
 });
@@ -22,7 +22,11 @@ Route::get('/Contact', function(){
     return view('contact');
 });
 
+Route::post('/upload', function(){
+    return ("Functionality to be encoded soon :v");
+});
+
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
-Route::get('/files', 'FileDisplayController@index');
+Route::get('/dashboard', 'FileDisplayController@index');
