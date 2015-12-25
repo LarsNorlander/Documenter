@@ -1,39 +1,26 @@
-$primaryColor: #1E90FF
-$secondaryColor: #00EEFF
+$primaryColor: #00c7ff
+$lighterColor:  #22d6FF
+$darkerColor: #00c0ff
 
 html
   font-family: sans-serif
   -moz-user-select: -moz-none
-  -khtml-user-select: none
   -webkit-user-select: none
   user-select: none
 
 #head1
-  background: linear-gradient(to left, $secondaryColor, $primaryColor)
+  background: $primaryColor
+  margin-top: 50px
   color: white
   font-size: 50px
   font-weight: 200
   text-align: center
   vertical-align: middle
-  line-height: 80px
+  line-height: 400px
   min-width: 100vw
-  min-height: 200px
+  min-height: 400px
 
-.navbar
-  background: rgba(255, 255, 255, 0.8)
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15)
-
-#signIn
-  background: mix($primaryColor, $secondaryColor)
-  color: white
-  border-color: darken(mix($primaryColor, $secondaryColor), 5%)
-
-.form-control
-  box-shadow: 0 0 0px #000
-  border-color: #dddddd
-  background: rgba(255, 255, 255, 1)
-
-h1
+h3
   text-align: center
   font-weight: 300
 

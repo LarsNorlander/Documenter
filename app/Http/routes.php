@@ -23,7 +23,7 @@ Route::get('/Contact', function(){
 });
 
 Route::post('/upload', function(){
-    return ("Functionality to be encoded soon :v");
+    return ("Functionality to be encoded soon...");
 });
 
 Route::post('/login', 'Auth\AuthController@postLogin');

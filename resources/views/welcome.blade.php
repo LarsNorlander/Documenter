@@ -6,8 +6,8 @@
 
 @section('body')
     <!-- Navigation bar -->
-    <nav class="navbar navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Documenter</a>
             </div>
@@ -30,7 +30,7 @@
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                     </div>
                     <!-- Login Button -->
-                    <button id="signIn" type="submit" class="btn btn-default"><span
+                    <button id="signIn" type="submit" class="btn btn-primary"><span
                                 class="glyphicon glyphicon-log-in"></span> Login
                     </button>
                 </form>
@@ -42,7 +42,7 @@
 
     <!-- Header -->
     <div id="head1">
-        <br/>Documents made easy.
+        <img src="{{asset('img/vector/logo.svg')}}" width="auto" height="270" style="margin-right: 50px">Documents made easy.
     </div>
     <!-- End of Header -->
 
@@ -50,8 +50,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <h1><br/>Documenter. A document management system that makes sure your documents are safe, backed up and
-                    shared to the right people.</h1><br/>
+                <h3><br/>Documenter. A document management system that makes sure your documents are safe, backed up and
+                    shared to the right people.</h3><br/>
             </div>
 
             <div class="row">

@@ -7,15 +7,19 @@
 
     @section('body')
             <!-- Navigation start -->
-    <nav class="navbar navbar-fixed-top">
+    <nav class="navbar navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">{{ Auth::user()->fname . " " . Auth::user()->lname . " &middot; " . Auth::user()->user_dept_id }}</a>
+                <a class="navbar-brand"
+                   href="#">{{ Auth::user()->fname . " " . Auth::user()->lname . " &middot; " . Auth::user()->user_dept_id }}</a>
             </div>
             <div>
                 <div class="nav navbar-form navbar-right">
-                    <button class="btn btn-default" data-toggle="modal" data-target="#uploadFile">Upload Document</button>
-                    <button class="btn btn-default" id="logOut"><span class="glyphicon glyphicon-log-out"></span> Log Out</button>
+                    <button class="btn btn-default" data-toggle="modal" data-target="#uploadFile">Upload Document
+                    </button>
+                    <button class="btn btn-default" id="logOut"><span class="glyphicon glyphicon-log-out"></span> Log
+                        Out
+                    </button>
                 </div>
             </div>
         </div>
@@ -27,19 +31,20 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Upload a file</h4>
                 </div>
                 <form action="/upload" method="post">
                     {!! csrf_field() !!}
-                <div class="modal-body">
+                    <div class="modal-body">
                         Select a file (PDF format)
                         <input class="form-control" type="file">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -118,7 +123,7 @@
     @section('footer')
             <!-- Page Specific script. Will be moved to it's own file. -->
     <script>
-        $("nav").css("background", "white");
+        //$("nav").css("background", "white");
 
         $(".file-item").click(function () {
             $("#no-content").hide(0)
