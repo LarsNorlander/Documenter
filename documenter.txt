@@ -1,0 +1,69 @@
+Legend
+
+[ String ]              Entity
+--String-->             Path
+[ (Float) String ]      Process
+[ D1 | String ]         Data Store
+
+[ Admin ] --File list request--> [ (1.0) Process file list request ] --File list query--> [ D1 | tbl_file_records ] --File list--> [ Admin ]
+
+[ Admin ] --File information request--> [ (2.0) Process file information request ] --File information query--> [ D1 | tbl_file_records ] --File information--> [ Admin ]
+
+[ Admin ] --File upload request--> [ (3.0) Process file upload request ] --File information--> [ D1 | tbl_file_records ]
+
+[ Admin ] --File download request--> [ (4.0) Process file download request ] --File query--> [ D1 | tbl_file_records ] --File--> [ Admin ]
+
+[ Admin ] --File share request-->   [ (5.0) Process file share request ] --File query, sharing information--> [ D1 | tbl_file_records ]
+                                    [ (5.0) Process file share request ] --Email--> [ Sharing target users ]
+
+[ Admin ] --Create user-defined tag request--> [ (6.0) Process create user-defined tag request ] --User query, user-defined tag information--> [ D2 | tbl_users ]
+
+[ Admin ] --Delete file request-->   [ (7.0) Process delete file request ] --Delete file query--> [ D1 | tbl_file_records ]
+
+[ Admin ] --Tag document request-->   [ (8.0) Process delete file request ] --File query, Tag information--> [ D1 | tbl_file_records ]
+
+[ Admin ] --New Department Data-->   [ (9.0) Process Department information ] --New department information--> [ D3 | tbl_departments ]
+
+[ Admin ] --New User Data-->   [ (10.0) Process Department information ] --New user information--> [ D4 | tbl_users ]
+
+[ Department Head ] --File list request--> [ (11.0) Process file list request ] --File list query--> [ D1 | tbl_file_records ] --File list--> [ Department Head ]
+
+[ Department Head ] --File information request--> [ (12.0) Process file information request ] --File information query--> [ D1 | tbl_file_records ] --File information--> [ Department Head ]
+
+[ Department Head ] --File upload request--> [ (13.0) Process file upload request ] --File information--> [ D1 | tbl_file_records ]
+                                             [ (13.0) Process file upload request ] --Email--> [ Admin ]
+
+[ Department Head ] --File download request--> [ (14.0) Process file download request ] --File query--> [ D1 | tbl_file_records ] --File--> [ Department Head ]
+
+[ Department Head ] --File share request-->   [ (15.0) Process file share request ] --File query, sharing information--> [ D1 | tbl_file_records ]
+                                              [ (15.0) Process file share request ] --Email--> [ Sharing target users ]
+
+[ Department Head ] --Award file delete request-->   [ (16.0) Process Award file delete request ] --Delete file prompt--> [ Admin ]  --Confirmation, Delete file query--> [ D1 | tbl_file_records ]
+
+[ Department Head ] --Personal file delete request-->   [ (17.0) Process Personal file delete request ] --Delete file query--> [ D1 | tbl_file_records ]
+
+[ Department Head ] --Create user-defined tag request--> [ (18.0) Process create user-defined tag request ] --User query, user-defined tag information--> [ D2 | tbl_users ]
+
+[ Department Head ] --Tag document request-->   [ (19.0) Process delete file request ] --File query, Tag information--> [ D1 | tbl_file_records ]
+
+[ Department Member ] --File list request--> [ (20.0) Process file list request ] --File list query--> [ D1 | tbl_file_records ] --File list--> [ Department Member ]
+
+[ Department Member ] --File information request--> [ (21.0) Process file information request ] --File information query--> [ D1 | tbl_file_records ] --File information--> [ Department Member ]
+
+[ Department Member ] --File upload request-->  [ (22.0) Process file upload request ] --File information--> [ D1 | tbl_file_records ]
+                                                [ (22.0) Process file upload request ] --Email--> [ Admin ]
+
+[ Department Member ] --File download request--> [ (23.0) Process file download request ] --File query--> [ D1 | tbl_file_records ] --File--> [ Department Member ]
+
+[ Department Member ] --File share request-->   [ (24.0) Process file share request ] --File query, sharing information--> [ D1 | tbl_file_records ]
+                                                [ (24.0) Process file share request ] --Email--> [ Sharing target users ]
+
+[ Department Member ] --Award file delete request-->   [ (25.0) Process Award file delete request ] --Delete file prompt--> [ Admin ]  --Confirmation, Delete file query--> [ D1 | tbl_file_records ]
+
+[ Department Member ] --Personal file delete request-->   [ (26.0) Process Personal file delete request ] --Delete file query--> [ D1 | tbl_file_records ]
+
+[ Department Member ] --Create user-defined tag request--> [ (27.0) Process create user-defined tag request ] --User query, user-defined tag information--> [ D2 | tbl_users ]
+
+[ Department Member ] --Tag document request-->   [ (28.0) Process delete file request ] --File query, Tag information--> [ D1 | tbl_file_records ]
+
+[ Public User ] --File download request--> [ (29.0) Process file download request ] --File query--> [ D1 | tbl_file_records ] --File--> [ Public user ]

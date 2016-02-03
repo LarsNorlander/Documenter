@@ -1,0 +1,45 @@
+//Mixins go here
+@mixin file-item($background)
+  padding-left: 30px
+  width: 100%
+  height: 50px
+  background: $background
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15)
+  display: flex
+  flex-direction: row
+  align-items: center
+  .file-name
+    width: 55%
+  .file-owner
+    width: 25%
+  .file-edited
+    width: 20%
+
+.file-list
+  position: fixed
+  left: 200px
+  top: 50px
+  height: 100%
+  background: #f0f0f0
+  overflow-y: scroll
+
+.file-header
+  background: transparent
+  min-height: 50px
+  font-weight: 600
+  padding-left: 20px
+  padding-bottom: 5px
+  width: 100%
+  display: flex
+  flex-direction: row
+  align-items: flex-end
+
+.file-item-even
+  @include file-item(#FFF)
+
+.file-item-odd
+  @include file-item(#EEE)
+
+.file-selected
+  background: $primaryColor
+  color: white

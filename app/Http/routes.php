@@ -18,15 +18,14 @@ Route::get('/', function () {
         return view('welcome');
 });
 
-Route::get('/Contact', function(){
-    return view('contact');
-});
-
-Route::post('/upload', function(){
-    return ("Functionality to be encoded soon...");
-});
-
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
-Route::get('/dashboard', 'FileDisplayController@index');
+Route::post('/upload', 'FileController@addFile');
+Route::get('/dashboard', 'FileController@viewFiles');
+Route::get('/file/details/{id}', 'FileController@getDetails');
+
+Route::get('/admin', 'AdminController@index');
+Route::get('/admin/depts', 'AdminController@depts');
+Route::post('/admin/add/dept', 'AdminController@addDepts');
+Route::get('/admin/del/dept/{id}', 'AdminController@delDepts');

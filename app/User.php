@@ -36,4 +36,8 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function user_dept(){
+        return $this->belongsTo('App\Department');
+    }
 }
