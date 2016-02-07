@@ -23,7 +23,18 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 
 Route::post('/upload', 'FileController@addFile');
 Route::get('/dashboard', 'FileController@viewFiles');
+
 Route::get('/file/details/{id}', 'FileController@getDetails');
+Route::post('/file/update/{id}', 'FileController@updateFile');
+Route::post('/file/sharing/{id}', 'FileController@shareFile');
+Route::post('/file/del/{id}', 'FileController@deleteFile');
+Route::post('/file/del/{id}/{ver}', 'FileController@deleteFileVer');
+Route::get('/file/setPublic/{id}/{ver}', 'FileController@setPublic');
+Route::get('/file/{id}', 'FileController@downloadFile');
+Route::get('/file/{id}/{ver}', 'FileController@downloadFileVer');
+
+Route::get('/sidebar/version/{id}', 'RightSideBarController@getVersions');
+Route::get('/sidebar/sharing/{id}', 'RightSideBarController@getSharing');
 
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/depts', 'AdminController@depts');

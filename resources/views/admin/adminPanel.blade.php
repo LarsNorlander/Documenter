@@ -2,15 +2,15 @@
 
 @section('pageTitle')
     Dashboard
-    @stop
+@stop
 
-    @section('body')
-            <!-- Navigation start -->
+@section('body')
+    {{-- Navigation start --}}
     <nav class="navbar navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand"
-                   href="#">Documenter</a>
+                   href="/">Documenter</a>
             </div>
             <ul class=" nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -25,74 +25,57 @@
             </ul>
         </div>
     </nav>
-    <!-- End of navigation -->
+    {{-- End of navigation --}}
 
-    <!-- Sidebar-Left Start -->
-    <section id="sidebarLeft">
-        <div class="sidebarLeft">
-            <ul class="sidebar-nav">
-                <li>
-                    <a href="/admin">All Files</a>
-                </li>
-                <li>
-                    <a href="/admin/depts">Departments</a>
-                </li>
-                <li>
-                    <a href="/admin/users">Users</a>
-                </li>
-                <li>
-                    <a href="/admin/delete">Delete Requests</a>
-                </li>
-                <li>
-                    <a href="/dashboard">Personal Dashboard</a>
-                </li>
-            </ul>
-        </div>
-    </section>
-    <!-- Sidebar-Left End -->
+    {{-- Sidebar-Left Start --}}
+    @include('nav.sidebarLeft')
+    {{-- Sidebar-Left End --}}
 
     <section id="fileDisplay">
         <div class="file-list">
-            <!-- File header -->
+            {{-- File header --}}
             @if( ! empty($allFiles))
                 @foreach($allFiles as $file)
-                        <!-- File item -->
-                <div class="file-item-even" id="{{ $file->id }}">
-                    <div class="file-name">{{ $file->filename }}</div>
-                    <div class="file-owner">{{ $file->user->fname . " " . $file->user->lname }}</div>
-                    <div class="file-edited">{{ date('F d, Y', strtotime($file->updated_at)) }}</div>
-                </div>
+                    {{-- File item --}}
+                    <div class="file-item-even" id="{{ $file->id }}">
+                        <div class="file-name">{{ $file->filename }}</div>
+                        <div class="file-owner">{{ $file->user->fname . " " . $file->user->lname }}</div>
+                        <div class="file-edited">{{ date('F d, Y', strtotime($file->updated_at)) }}</div>
+                    </div>
                 @endforeach
             @endif
 
-                @if( ! empty($allDepts))
-                        <div class="file-header">Departments</div>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#addDept" style="margin-left: 10px; margin-bottom:20px">Add Department</button>
+            @if( ! empty($allDepts))
+                <div class="file-header">Departments</div>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addDept"
+                        style="margin-left: 10px; margin-bottom:20px">Add Department
+                </button>
                 @foreach($allDepts as $file)
-                        <!-- File item -->
-            <div class="file-item-even" id="{{ $file->id }}">
-                <div class="btn-group">
-                    <button class="btn btn-primary" id="editButton"
-                            data-toggle="modal" data-target="#fileShare">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </button>
-                    <a href="/admin/del/dept/{{$file->id}}"<button class="btn btn-danger" id="deleteButton">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                    </a>
-                </div>
-                <div class="file-name" style="margin-left:10px">{{ $file->name }}</div>
-            </div>
-            @endforeach
+                    {{-- File item --}}
+                    <div class="file-item-even" id="{{ $file->id }}">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="editButton"
+                                    data-toggle="modal" data-target="#fileShare">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                            <a href="/admin/del/dept/{{$file->id}}">
+                            <button class="btn btn-danger" id="deleteButton">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            </a>
+                        </div>
+                        <div class="file-name" style="margin-left:10px">{{ $file->name }}</div>
+                    </div>
+                @endforeach
             @endif
         </div>
     </section>
-    <!-- End of file display section -->
+    {{-- End of file display section --}}
 
-    <!-- Modals -->
+    {{-- Modals --}}
     <div class="modal fade" id="addDept" tabindex="-1" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal Contents -->
+            {{-- Modal Contents --}}
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -109,10 +92,10 @@
     </div>
 
 
-    <!-- End of Modals -->
+    {{-- End of Modals --}}
 
-    @section('footer')
-            <!-- Page Specific script. Will be moved to it's own file. -->
+@section('footer')
+    {{-- Page Specific script. Will be moved to it's own file. --}}
     <script src="/js/dropzone.js"></script>
     <script src="/js/application.js"></script>
 

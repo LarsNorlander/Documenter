@@ -1,6 +1,7 @@
 //Mixins go here
 @mixin file-item($background)
   padding-left: 30px
+  padding-right: 10px
   width: 100%
   height: 50px
   background: $background
@@ -9,11 +10,14 @@
   flex-direction: row
   align-items: center
   .file-name
-    width: 55%
+    width: 45%
   .file-owner
     width: 25%
   .file-edited
     width: 20%
+  .file-actions
+    width: 10%
+    text-align: right
 
 .file-list
   position: fixed

@@ -21,6 +21,8 @@
     {{-- Modals go here. --}}
     @include('modals.fileUploadModal')
     @include('modals.sharingModal')
+    @include('modals.confirmFileDelModal')
+    @include('modals.fileNewVersionUpload')
 @stop
 
 @section('footer')

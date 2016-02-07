@@ -1,8 +1,8 @@
 .sidebarRight {
   border-left: 1px solid rgba(0, 0, 0, 0.15);
   position: fixed;
-  right: 0px;
-  margin-top: 50px;
+  right: 0;
+  padding-top: 50px;
   height: 100%;
   width: 300px;
   background: #fafafa;
@@ -25,7 +25,36 @@
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.version-list {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  margin-bottom: 2px;
+}
+
+.version-list .version-label {
+  width: auto;
+  float: left;
+}
+
+.version-list .version-options {
+  width: auto;
+  float: right;
 }
 
 .sidebarLeft {
@@ -72,6 +101,10 @@
   text-decoration: none;
 }
 
+.nav-drop {
+  border-radius: 0;
+}
+
 .file-list {
   position: fixed;
   left: 200px;
@@ -101,6 +134,7 @@
 
 .file-item-even {
   padding-left: 30px;
+  padding-right: 10px;
   width: 100%;
   height: 50px;
   background: #FFF;
@@ -117,7 +151,7 @@
 }
 
 .file-item-even .file-name {
-  width: 55%;
+  width: 45%;
 }
 
 .file-item-even .file-owner {
@@ -128,8 +162,14 @@
   width: 20%;
 }
 
+.file-item-even .file-actions {
+  width: 10%;
+  text-align: right;
+}
+
 .file-item-odd {
   padding-left: 30px;
+  padding-right: 10px;
   width: 100%;
   height: 50px;
   background: #EEE;
@@ -146,7 +186,7 @@
 }
 
 .file-item-odd .file-name {
-  width: 55%;
+  width: 45%;
 }
 
 .file-item-odd .file-owner {
@@ -155,6 +195,11 @@
 
 .file-item-odd .file-edited {
   width: 20%;
+}
+
+.file-item-odd .file-actions {
+  width: 10%;
+  text-align: right;
 }
 
 .file-selected {
