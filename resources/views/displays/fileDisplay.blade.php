@@ -1,12 +1,12 @@
 <div class="file-list">
     {{-- File header --}}
-    @if(count($userFiles)   > 0     or
-        count($deptFiles)   > 0     or
-        count($orgFiles)    > 0     or
-        count($shareFiles)  > 0     )
+    @if((isset($userFiles) and count($userFiles)   > 0)     or
+        (isset($deptFiles) and count($deptFiles)   > 0)     or
+        (isset($orgFiles) and count($orgFiles)    > 0)     or
+        (isset($shareFiles) and count($shareFiles)  > 0)     )
 
         {{-- User Owned Files --}}
-        @if(count($userFiles) > 0)
+        @if(isset($userFiles) and count($userFiles) > 0)
             <div class="file-header">
                 My Files
             </div>
@@ -18,7 +18,13 @@
                         {{ date('F d, Y', strtotime($file->updated_at)) }}
                     </div>
                     <div class="file-actions">
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#delFile">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="
+                        @if($file->doc_type_id == 1)
+                                #delFile
+                        @else
+                                #delAward
+                    @endif
+                                ">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </div>
@@ -27,7 +33,7 @@
         @endif
 
         {{-- User Owned Files --}}
-        @if(count($shareFiles) > 0)
+        @if(isset($shareFiles) and count($shareFiles) > 0)
             <div class="file-header">
                 Shared with me
             </div>
@@ -41,7 +47,7 @@
         @endif
 
         {{-- Files Shared With Department --}}
-        @if(count($deptFiles) > 0)
+        @if(isset($deptFiles) and count($deptFiles) > 0)
             <div class="file-header">
                 Shared with your department
             </div>
@@ -55,7 +61,7 @@
         @endif
 
         {{-- Files Shared With Organization --}}
-        @if(count($orgFiles) > 0)
+        @if(isset($orgFiles) and count($orgFiles) > 0)
             <div class="file-header">
                 Shared with Angeles University Foundation
             </div>

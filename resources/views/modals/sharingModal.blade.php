@@ -6,22 +6,33 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">File Sharing</h4>
             </div>
-            {!! Form::open(['url' => '/file/sharing', 'id' => 'fileSharingForm']) !!}
+            {!! Form::open(['url' => '/file/sharing/' . $id, 'id' => 'fileSharingForm']) !!}
             <div class="modal-body">
 
                 {!! Form::label("Users", "Share with users:") !!}
-                <div class="tagsinput-primary">
-                    {!! Form::text("Users", null, ['class'     => 'tagsinput', 'data-role' => 'tagsinput']) !!}
-                </div>
+                <br/>
+                <select name="Users[]" multiple="multiple" class="form-control multiselect multiselect-info">
+                    @foreach($users as $user)
+                        <option value="{{$user->username}}" @if(in_array($user->username, $sharedUsers)) selected @endif>{{$user->username}}</option>
+                    @endforeach
+                </select>
+                <br/>
+
                 {!! Form::label("Departments", "Share with departments:") !!}
-                <div class="tagsinput-primary">
-                    {!! Form::text("Departments", null, ['class'     => 'tagsinput', 'data-role' => 'tagsinput']) !!}
-                </div>
+                <br/>
+
+                <select name="Departments[]" multiple="multiple" class="form-control multiselect multiselect-info">
+                    @foreach($departments as $department)
+                        <option value="{{$department->name}}" @if(in_array($department->name, $sharedDepartments)) selected @endif>{{$department->name}}</option>
+                    @endforeach
+                </select>
+                <br/>
+
                 {!! Form::label("Mass", "Mass sharing") !!}
                 <br/>
                 {!! Form::select("Mass",
                     ['None', 'Organizational', 'Public'],
-                    '0',
+                    $mass,
                     [ 'class' => 'form-control select select-primary select-block']) !!}
             </div>
             <div class="modal-footer">

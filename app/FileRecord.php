@@ -19,4 +19,8 @@ class FileRecord extends Model {
     public function user(){
         return $this->belongsTo('App\User', 'owner_id');
     }
+
+    public function achievements(){
+        return $this->hasOne('App\Achievements', 'achievement_id');
+    }
 }

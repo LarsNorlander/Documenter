@@ -2,41 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
 use App\FileRecord;
 use App\Http\Requests;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
 
 class FileController extends Controller {
-
-    public function viewFiles()
-    {
-        $userFiles = FileRecord::with('user')
-            ->where('owner_id', Auth::User()->id)
-            ->get();
-        $deptFiles = FileRecord::with('user')
-            ->where('sharing', 'LIKE', "%" . Auth::User()->user_dept->name . "%")
-            ->where('owner_id', '!=', Auth::User()->id)
-            ->get();
-        $orgFiles = FileRecord::with('user')
-            ->where('sharing', 'LIKE', "%\"mass\":\"1\"%")
-            ->where('owner_id', '!=', Auth::User()->id)
-            ->get();
-        $shareFiles = FileRecord::with('user')
-            ->where('sharing', 'LIKE', "%" . Auth::User()->username . "%")
-            ->where('owner_id', '!=', Auth::User()->id)
-            ->get();
-
-        return View::make('dashboard')
-            ->with('userFiles', $userFiles)
-            ->with('orgFiles', $orgFiles)
-            ->with('shareFiles', $shareFiles)
-            ->with('deptFiles', $deptFiles);
-    }
 
     public function addFile(Request $request)
     {
@@ -48,9 +25,29 @@ class FileController extends Controller {
             $entry->total_versions = 1;
             $entry->public_version = 1;
             $entry->owner_id = Auth::User()->id;
+            $users = [];
+            $departments = [];
+            $mass = "0";
+            $sharing_array = ['users' => $users, 'departments' => $departments, 'mass' => $mass];
+            $sharing = json_encode($sharing_array);
+            $entry->sharing = $sharing;
+            $entry->doc_type_id = 1;
             $entry->save();
 
             Storage::disk('local')->put(Auth::User()->id . $entry->id . $file->getClientOriginalName() . "/1", File::get($file));
+
+            //Email Section
+            $admins = User::get()->where('user_type_id', 1);
+            $uploader = Auth::user()->fname . " " . Auth::user()->lname . " (" . Auth::user()->username . ")";
+            $data = ['uploader' => $uploader,
+                     'fileName' => $entry->filename,
+                     'id'       => $entry->id];
+            foreach ($admins as $admin) {
+                Mail::queue('mail.newUpload', $data, function ($message) use (&$admin) {
+                    $message->to($admin->email, 'Admin')->subject('New Upload');
+                });
+            }
+
         } else
             return "No file";
     }
@@ -60,8 +57,27 @@ class FileController extends Controller {
         $entry = FileRecord::where('id', '=', $id)->firstOrFail();
         $file = Storage::disk('local')->get($entry->owner_id . $entry->id . $entry->filename . "/" . $entry->public_version);
 
-        return (new Response($file, 200))
-            ->header('Content-Type', $entry->mime);
+        $sharing = (array)json_decode($entry->sharing);
+
+        if (auth::check()) {
+            if ($entry->owner_id == Auth::user()->id or
+                auth::User()->user_type_id == 1 or
+                in_array(Auth::user()->username, $sharing['users']) or
+                in_array(Auth::user()->user_dept->name, $sharing['departments']) or
+                $sharing['mass'] == 1
+            ) {
+                return (new Response($file, 200))
+                    ->header('Content-Type', $entry->mime);
+            } else {
+                return "You aren't allowed to access this file.";
+            }
+        } elseif ($sharing['mass'] == 2) {
+            return (new Response($file, 200))
+                ->header('Content-Type', $entry->mime);
+        } else {
+            return "You aren't allowed to access this file.";
+        }
+
     }
 
     public function downloadFileVer($id, $ver)
@@ -82,19 +98,42 @@ class FileController extends Controller {
         $entry->public_version = $entry->total_versions;
         $entry->save();
 
+        $admins = User::get()->where('user_type_id', 1);
+        foreach ($admins as $admin) {
+            $uploader = Auth::user()->fname . " " . Auth::user()->lname . " (" . Auth::user()->username . ")";
+            Mail::queue('mail.adminFileUpdate', ['uploader' => $uploader, 'fileName' => $entry->filename, 'id' => $entry->id, 'version' => $entry->public_version], function ($message) use (&$admin) {
+                $message->to($admin->email, $admin->fname)->subject('New File Update');
+            });
+
+        }
+
         return redirect('/');
     }
 
     public function shareFile($id, Request $request)
     {
         $entry = FileRecord::where('id', '=', $id)->firstOrFail();
-        $users = $request->Users;
-        $departments = $request->Departments;
+        $users = (array)$request->Users;
+        $departments = (array)$request->Departments;
         $mass = $request->Mass;
         $sharing_array = ['users' => $users, 'departments' => $departments, 'mass' => $mass];
         $sharing = json_encode($sharing_array);
         $entry->sharing = $sharing;
         $entry->save();
+
+        $file = FileRecord::where('id', $id)->firstOrFail();
+        $owner = User::where('id', $file->owner_id)->firstOrFail();
+        $uploader = $owner->fname . " " . $owner->lname . " (" . $owner->username . ")";
+
+
+        foreach ($users as $user) {
+            $shared = User::where('username', $user)->firstOrFail();
+            $data = ['uploader' => $uploader,
+                     'fileName' => $entry->filename,];
+            Mail::queue('mail.fileShared', $data, function ($message) use (&$shared) {
+                $message->to($shared->email, $shared->fname)->subject('A file was shared.');
+            });
+        }
 
         return redirect('/');
     }
@@ -132,6 +171,7 @@ class FileController extends Controller {
         $entry = FileRecord::where('id', '=', $id)->firstOrFail();
         $entry->public_version = $ver;
         $entry->save();
+
         return redirect('/');
     }
 
@@ -140,5 +180,23 @@ class FileController extends Controller {
         $file = FileRecord::where('id', $id)->get();
 
         return $file;
+    }
+
+    public function tagFile($id, Request $request)
+    {
+        $entry = FileRecord::where('id', '=', $id)->firstOrFail();
+        $docTags = (array) json_decode($entry->tags);
+        if (isset($docTags[Auth::User()->username])) {
+            $newTags = (array)$request->Tags;
+            $docTags[Auth::User()->username] = $newTags;
+        } else{
+            $newTagsKey = array(Auth::User()->username => (array)$request->Tags);
+            $docTags = array_merge($docTags, $newTagsKey);
+        }
+
+        $entry->tags = json_encode($docTags);
+        $entry->save();
+
+        return redirect('/');
     }
 }

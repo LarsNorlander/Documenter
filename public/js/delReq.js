@@ -10,19 +10,6 @@ $(".file-item-even").click(function () {
     else {
         $("#documentOptions").show(0);
     }
-    $("#fileSharingForm").attr("action", "/file/sharing/" + $(this).attr("id"));
-    $("#fileDelForm").attr("action", "/file/del/" + $(this).attr("id"));
-    $("#fileUpdateForm").attr("action", "/file/update/" + $(this).attr("id"));
-    $("#fileTagForm").attr("action", "/file/addTag/" + $(this).attr("id"));
-    $("#awardDelForm").attr("action", "/award/delReq/" + $(this).attr("id"));
-    $.ajax({
-        type: 'get',
-        url: '/sidebar/version/' + id,
-        dataType: "html",
-        success: function (data) {
-            $('#versionCard').html(data);
-        }
-    });
     $.ajax({
         type: 'get',
         url: '/sidebar/details/' + id,
@@ -31,39 +18,16 @@ $(".file-item-even").click(function () {
             $('#detailsCard').html(data);
         }
     });
+
     $.ajax({
         type: 'get',
-        url: '/sidebar/sharing/' + id,
+        url: '/sidebar/delReq/' + id,
         dataType: "html",
         success: function (data) {
-            $('#sharingCard').html(data);
-        }
-    });
-    $.ajax({
-        type: 'get',
-        url: '/sidebar/tags/' + id,
-        dataType: "html",
-        success: function (data) {
-            $('#tagsCard').html(data);
-        }
-    });
-    $.ajax({
-        url: '/modal/addTag/' + id,
-        dataType: "html",
-        success: function (data) {
-            $('#modalFileTag').append(data);
-            $("select").select2({dropdownCssClass: 'dropdown-inverse'});
+            $('#delReqCard').html(data);
         }
     });
 
-    $.ajax({
-        url: '/modal/sharing/' + id,
-        dataType: "html",
-        success: function (data) {
-            $('#modalSharing').append(data);
-            $("select").select2({dropdownCssClass: 'dropdown-inverse'});
-        }
-    });
     $.getJSON("/file/details/" + $(this).attr("id"), function (data) {
         var obj = JSON.parse(data[0].sharing);
         $("#Users").attr("value", obj.users);
@@ -101,5 +65,3 @@ $(window).resize(function () {
 Dropzone.options.myAwesomeDropzone = {
     acceptedFiles: "application/pdf"
 };
-
-// Section for sidebare

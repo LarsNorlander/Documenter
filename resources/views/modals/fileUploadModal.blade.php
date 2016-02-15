@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <a href="/" type="button" class="close">&times;</a>
                 <h4 class="modal-title">Upload your documents</h4>
             </div>
             <div class="modal-body">
@@ -14,7 +14,7 @@
                 {!! Form::close() !!}
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="/" class="btn btn-default">Close</a>
             </div>
         </div>
     </div>

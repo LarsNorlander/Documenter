@@ -12,10 +12,9 @@ class UserTypeSeeder extends Seeder {
     {
         // Seeder for populating the UserTypeSeeder
         DB::table('tbl_user_types')->insert([
-            ['name' => 'super_admin'],
-            ['name' => 'org_head'],
-            ['name' => 'dept_head'],
-            ['name' => 'dept_mem'],
+            ['name' => 'Super Admin'],
+            ['name' => 'Department Head'],
+            ['name' => 'Department Member'],
         ]);
     }
 }

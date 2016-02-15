@@ -1,0 +1,9 @@
+@if(isset($allDepts))
+    @include('displays.admin.adminDepartmentDisplay')
+@elseif(isset($allFiles))
+    @include('displays.admin.adminFileDisplay')
+@elseif(isset($allUsers))
+    @include('displays.admin.adminUserDisplay')
+@elseif(isset($delReq))
+    @include('displays.admin.adminDelReqDisplay')
+@endif

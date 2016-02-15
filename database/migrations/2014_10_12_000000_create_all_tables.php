@@ -15,6 +15,7 @@ class CreateAllTables extends Migration {
         Schema::create('tbl_departments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->boolean('deletable');
             $table->timestamps();
         });
         //Creates tbl_user_types
@@ -26,7 +27,7 @@ class CreateAllTables extends Migration {
         //Creates tbl_user_status
         Schema::create('tbl_user_status', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('statusname');
+            $table->string('name');
             $table->timestamps();
         });
         //Creates tbl_users
@@ -43,13 +44,14 @@ class CreateAllTables extends Migration {
             $table->foreign('user_dept_id')->references('id')->on('tbl_departments');
             $table->integer('user_type_id')->unsigned();
             $table->foreign('user_type_id')->references('id')->on('tbl_user_types');
+            $table->json('user_tags');
             $table->rememberToken();
             $table->timestamps();
         });
         //Creates tbl_doc_types
         Schema::create('tbl_doc_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('typename');
+            $table->string('name');
             $table->timestamps();
         });
 
@@ -63,8 +65,35 @@ class CreateAllTables extends Migration {
             $table->integer('owner_id')->unsigned();
             $table->foreign('owner_id')->references('id')->on('tbl_users');
             $table->integer('doc_type_id')->unsigned();
-            $table->foreign('doc_type_id')->references('id')->on('tbl_doc_type');
+            $table->foreign('doc_type_id')->references('id')->on('tbl_doc_types');
             $table->json('sharing');
+            $table->json('tags');
+            $table->timestamps();
+        });
+
+        Schema::create('tbl_memos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->date('validity');
+            $table->longText('details');
+            $table->integer('memo_id')->unsigned();
+            $table->foreign('memo_id')->references('id')->on('tbl_file_records');
+            $table->timestamps();
+        });
+
+        Schema::create('tbl_achievements', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->date('received');
+            $table->string('type');
+            $table->date('validity');
+            $table->longText('details');
+            //$table->boolean('univ');
+            $table->boolean('approved');
+            $table->boolean('delete_pending');
+            $table->longText('delete_details');
+            $table->integer('achievement_id')->unsigned();
+            $table->foreign('achievement_id')->references('id')->on('tbl_file_records');
             $table->timestamps();
         });
     }
@@ -77,9 +106,13 @@ class CreateAllTables extends Migration {
     public function down()
     {
         //Pretty self-explanatory for these lines
+        Schema::drop('tbl_achievements');
+
+        Schema::drop('tbl_memos');
+
         Schema::drop('tbl_file_records');
 
-        Schema::drop('tbl_doc_type');
+        Schema::drop('tbl_doc_types');
 
         Schema::drop('tbl_users');
 

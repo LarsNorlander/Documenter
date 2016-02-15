@@ -12,16 +12,15 @@
     </div>
 
     <div id="detailsCard"></div>
-    <div id="tagsCard"></div>
 
     <section id="documentOptions">
         <div class="sidebar-head">
-            Document Options
+            Delete Request
             <hr/>
         </div>
 
-        <div id="sharingCard"></div>
-        <div id="versionCard"></div>
+        <div id="delReqCard"></div>
+
     </section>
 
 </div>
