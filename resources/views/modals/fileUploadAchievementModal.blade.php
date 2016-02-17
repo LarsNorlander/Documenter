@@ -16,7 +16,7 @@
                 {!! Form::text("type", null, ['class' => 'form-control', 'required']) !!}
                 {!! Form::label("received", "Date Received") !!}
                 <input id="received" name="received" type="date" class="form-control" required>
-                {!! Form::label("validity", "Valid till (leave as is if it does not apply)") !!}
+                {!! Form::label("validity", "Valid till (set to the same date if it does not apply)") !!}
                 <input id="validity" name="validity" type="date" class="form-control">
                 {!! Form::label("details", "Additional details") !!}
                 {!! Form::textarea("details", null, ['class'=>'form-control']) !!}

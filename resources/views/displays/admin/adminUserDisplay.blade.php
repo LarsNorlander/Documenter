@@ -7,22 +7,33 @@
         {{-- File item --}}
         @unless($user->username == auth::user()->username)
             <div class="file-item-even" id="{{ $user->id }}">
-                <div class="file-name" style="margin-left:10px; width:45%">{{ $user->username }}</div>
-                <div class="file-name" style="margin-left:10px; width:45%">
+                <div class="file-name" style="margin-left:10px; width:30%">
+                    {{$user->fname . " " . $user->lname . " "}}({{ $user->username }})
+                </div>
+                <div class="file-name" style="width:30%">
+                    {{$user->user_dept->name}}
+                </div>
+                <div class="file-name" style="width:30%">
+                    {{$user->user_type->name}}
+                </div>
+                {{--
+                <div class="file-name" style="width:30%">
                     @if($user->user_status_id == 1)
                         Active
                     @else
                         Locked
                     @endif
                 </div>
+                --}}
                 <div class="btn-group" style="text-align:left; width:10%">
-                    <a href="#" class="btn btn-primary" id="editButton"
-                       data-toggle="modal" data-target="#fileShare">
+                    <a href="/admin/edit/user/{{$user->id}}" class="btn btn-primary" id="editButton">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>
+                    {{--
                     <a href="/admin/user/lock/{{$user->id}}" class="btn btn-default" id="deleteButton">
                         <span class="glyphicon glyphicon-lock"></span>
                     </a>
+                    --}}
                 </div>
             </div>
         @endunless

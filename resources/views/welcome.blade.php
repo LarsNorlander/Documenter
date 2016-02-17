@@ -59,8 +59,7 @@
                     storing all your documents for easy retrieval, sharing and safekeeping. Document work should be a little
                     more like this.</h5>
                 <br/>
-                <img src="{{asset('img/mac_mockup.png')}}" width="70%"
-                     style="display: block; margin-left: auto; margin-right: auto">
+
             </div>
         </div>
     </div>

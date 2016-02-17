@@ -72,7 +72,7 @@ class AdminController extends Controller {
     {
         $this->checkAuth();
 
-        $allUsers = User::get();
+        $allUsers = User::with('user_dept')->with('user_type')->get();
 
         $userTags = $this->retrieveTags();
         $departments = Department::get();
@@ -104,6 +104,51 @@ class AdminController extends Controller {
         return redirect('/admin/users');
     }
 
+    public function editUser($id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $departments = Department::get();
+        $userTypes = UserType::get();
+
+        return view('displays.admin.editUser')
+            ->with('user', $user)
+            ->with('departments', $departments)
+            ->with('userTypes', $userTypes);
+    }
+
+    public function commitEditUser(Request $request, $id)
+    {
+        $newUser = User::where('id', $id)->firstOrFail();;
+        $newUser->fname = $request->fname;
+        $newUser->lname = $request->lname;
+        $newUser->username = $request->username;
+        $newUser->email = $request->email;
+        if (!$request->password == "")
+            $newUser->password = bcrypt($request->password);
+        $newUser->user_dept_id = $request->department;
+        $newUser->user_type_id = $request->userType;
+        $newUser->save();
+
+        return redirect('/admin/users');
+    }
+
+    public function editDept($id)
+    {
+        $departments = Department::where('id', $id)->firstOrFail();
+
+        return view('displays.admin.editDept')
+            ->with('department', $departments);
+    }
+
+    public function commitEditDept(Request $request, $id)
+    {
+        $departments = Department::where('id', $id)->firstOrFail();
+        $departments->name = $request->name;
+        $departments->save();
+
+        return redirect('/admin/depts');
+    }
+
     public function lockUser($id)
     {
         $this->checkAuth();
@@ -115,7 +160,7 @@ class AdminController extends Controller {
             Mail::queue('mail.accLocked', [], function ($message) use (&$user) {
                 $message->to($user->email, $user->fname)->subject('Account Locked.');
             });
-        } else{
+        } else {
             $user->user_status_id = 1;
             Mail::queue('mail.accUnlocked', [], function ($message) use (&$user) {
                 $message->to($user->email, $user->fname)->subject('Account Unlocked.');

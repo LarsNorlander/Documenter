@@ -40,4 +40,8 @@ class User extends Model implements AuthenticatableContract,
     public function user_dept(){
         return $this->belongsTo('App\Department');
     }
+
+    public function user_type(){
+        return $this->belongsTo('App\UserType');
+    }
 }

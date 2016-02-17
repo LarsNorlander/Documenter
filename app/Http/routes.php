@@ -18,6 +18,7 @@ Route::get('/', function () {
         return view('welcome');
 });
 
+
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
@@ -60,6 +61,10 @@ Route::get('/sidebar/delReq/{id}', 'RightSideBarController@getDelReq');
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/depts', 'AdminController@depts');
 Route::get('/admin/users', 'AdminController@users');
+Route::get('/admin/edit/user/{id}', 'AdminController@editUser');
+Route::post('/admin/edit/user/{id}', 'AdminController@commitEditUser');
+Route::get('/admin/edit/dept/{id}', 'AdminController@editdept');
+Route::post('/admin/edit/dept/{id}', 'AdminController@commitEditDept');
 Route::get('/admin/user/lock/{id}', 'AdminController@lockUser');
 Route::get('/admin/delete', 'AdminController@delAwards');
 Route::post('/admin/add/dept', 'AdminController@addDepts');

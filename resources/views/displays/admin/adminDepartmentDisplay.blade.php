@@ -8,8 +8,7 @@
         <div class="file-item-even" id="{{ $file->id }}">
             <div class="file-name" style="margin-left:10px; width:90%">{{ $file->name }}</div>
             <div class="btn-group" style="text-align:left; width:10%">
-                <a href="#" class="btn btn-primary" id="editButton"
-                   data-toggle="modal" data-target="#fileShare">
+                <a href="/admin/edit/dept/{{$file->id}}" class="btn btn-primary" id="editButton">
                     <span class="glyphicon glyphicon-edit"></span>
                 </a>
                 <a href="/admin/del/dept/{{$file->id}}" class="btn btn-danger" id="deleteButton">
