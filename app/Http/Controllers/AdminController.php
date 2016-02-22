@@ -14,42 +14,98 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+
+    /*
+     * The upper section contains methods used to pass data to the views
+     * based on different queries. The bottom part of this controller is
+     * all about the different actions of the administrator.
      */
-    public function index()
-    {
+
+    /*
+     * The index controller returns all files that are in the system.
+     * The data is all passed into the Dashboard view to be displayed.
+     */
+
+    public function index() {
         $this->checkAuth();
         $allFiles = FileRecord::with('user')
-            ->get();
+                              ->get()
+        ;
 
         $userTags = $this->retrieveTags();
 
         return view('dashboard')
-            ->with('allFiles', $allFiles)
-            ->with('userTags', $userTags)
-            ->with('screen', "admin");
+            ->with('allFiles' , $allFiles)
+            ->with('userTags' , $userTags)
+            ->with('screen' , "admin")
+            ;
     }
 
+    // End of the index() controller.
 
-    public function depts()
-    {
+
+    /*
+     * The depts controller does almost the same thing as the index controller.
+     * In case it wasn't obvious though, the only thing different here really
+     * is that it fetches the departments instead.
+     */
+
+    public function depts() {
         $this->checkAuth();
         $allDepts = Department::get();
 
         $userTags = $this->retrieveTags();
 
         return view('dashboard')
-            ->with('allDepts', $allDepts)
-            ->with('userTags', $userTags)
-            ->with('screen', "admin")
-            ->with('noSidebar', true);
+            ->with('allDepts' , $allDepts)
+            ->with('userTags' , $userTags)
+            ->with('screen' , "admin")
+            ->with('noSidebar' , true)
+            ;
     }
 
-    public function addDepts(Request $request)
-    {
+    // End of the depts() function.
+
+    public function users() {
+        $this->checkAuth();
+
+        $allUsers = User::with('user_dept')
+                        ->with('user_type')
+                        ->get()
+        ;
+
+        $userTags = $this->retrieveTags();
+        $departments = Department::get();
+        $userTypes = UserType::get();
+
+        return view('dashboard')
+            ->with('allUsers' , $allUsers)
+            ->with('userTags' , $userTags)
+            ->with('departments' , $departments)
+            ->with('userTypes' , $userTypes)
+            ->with('screen' , "admin")
+            ->with('noSidebar' , true)
+            ;
+    }
+
+    public function delAwards() {
+        $userFiles = FileRecord::with('user')
+                               ->with('achievements')
+                               ->where('owner_id' , Auth::User()->id)
+                               ->where('doc_type_id' , 2)
+                               ->get()
+        ;
+
+        $userTags = $this->retrieveTags();
+
+        return view('dashboard')
+            ->with('delReq' , $userFiles)
+            ->with('userTags' , $userTags)
+            ->with('screen' , 'admin')
+            ;
+    }
+
+    public function addDepts(Request $request) {
         $this->checkAuth();
         $name = $request->collegeName;
         $entry = new Department();
@@ -59,8 +115,7 @@ class AdminController extends Controller {
         return redirect('/admin/depts');
     }
 
-    public function delDepts($id)
-    {
+    public function delDepts($id) {
         $this->checkAuth();
         //Delete stuff
         Department::destroy($id);
@@ -68,27 +123,7 @@ class AdminController extends Controller {
         return redirect('/admin/depts');
     }
 
-    public function users()
-    {
-        $this->checkAuth();
-
-        $allUsers = User::with('user_dept')->with('user_type')->get();
-
-        $userTags = $this->retrieveTags();
-        $departments = Department::get();
-        $userTypes = UserType::get();
-
-        return view('dashboard')
-            ->with('allUsers', $allUsers)
-            ->with('userTags', $userTags)
-            ->with('departments', $departments)
-            ->with('userTypes', $userTypes)
-            ->with('screen', "admin")
-            ->with('noSidebar', true);
-    }
-
-    public function addUser(Request $request)
-    {
+    public function addUser(Request $request) {
         $newUser = new User();
         $newUser->fname = $request->fname;
         $newUser->lname = $request->lname;
@@ -104,27 +139,31 @@ class AdminController extends Controller {
         return redirect('/admin/users');
     }
 
-    public function editUser($id)
-    {
-        $user = User::where('id', $id)->firstOrFail();
+    public function editUser($id) {
+        $user = User::where('id' , $id)
+                    ->firstOrFail()
+        ;
         $departments = Department::get();
         $userTypes = UserType::get();
 
         return view('displays.admin.editUser')
-            ->with('user', $user)
-            ->with('departments', $departments)
-            ->with('userTypes', $userTypes);
+            ->with('user' , $user)
+            ->with('departments' , $departments)
+            ->with('userTypes' , $userTypes)
+            ;
     }
 
-    public function commitEditUser(Request $request, $id)
-    {
-        $newUser = User::where('id', $id)->firstOrFail();;
+    public function commitEditUser(Request $request , $id) {
+        $newUser = User::where('id' , $id)
+                       ->firstOrFail()
+        ;;
         $newUser->fname = $request->fname;
         $newUser->lname = $request->lname;
         $newUser->username = $request->username;
         $newUser->email = $request->email;
-        if (!$request->password == "")
+        if (!$request->password == "") {
             $newUser->password = bcrypt($request->password);
+        }
         $newUser->user_dept_id = $request->department;
         $newUser->user_type_id = $request->userType;
         $newUser->save();
@@ -132,38 +171,45 @@ class AdminController extends Controller {
         return redirect('/admin/users');
     }
 
-    public function editDept($id)
-    {
-        $departments = Department::where('id', $id)->firstOrFail();
+    public function editDept($id) {
+        $departments = Department::where('id' , $id)
+                                 ->firstOrFail()
+        ;
 
         return view('displays.admin.editDept')
-            ->with('department', $departments);
+            ->with('department' , $departments);
     }
 
-    public function commitEditDept(Request $request, $id)
-    {
-        $departments = Department::where('id', $id)->firstOrFail();
+    public function commitEditDept(Request $request , $id) {
+        $departments = Department::where('id' , $id)
+                                 ->firstOrFail()
+        ;
         $departments->name = $request->name;
         $departments->save();
 
         return redirect('/admin/depts');
     }
 
-    public function lockUser($id)
-    {
+    public function lockUser($id) {
         $this->checkAuth();
-        $user = User::where('id', '=', $id)->firstOrFail();
+        $user = User::where('id' , '=' , $id)
+                    ->firstOrFail()
+        ;
 
         if ($user->user_status_id == 1) {
             $user->user_status_id = 2;
 
-            Mail::queue('mail.accLocked', [], function ($message) use (&$user) {
-                $message->to($user->email, $user->fname)->subject('Account Locked.');
+            Mail::queue('mail.accLocked' , [ ] , function($message) use (&$user) {
+                $message->to($user->email , $user->fname)
+                        ->subject('Account Locked.')
+                ;
             });
         } else {
             $user->user_status_id = 1;
-            Mail::queue('mail.accUnlocked', [], function ($message) use (&$user) {
-                $message->to($user->email, $user->fname)->subject('Account Unlocked.');
+            Mail::queue('mail.accUnlocked' , [ ] , function($message) use (&$user) {
+                $message->to($user->email , $user->fname)
+                        ->subject('Account Unlocked.')
+                ;
             });
         }
 
@@ -172,31 +218,23 @@ class AdminController extends Controller {
         return redirect('/admin/users');
     }
 
-    public function delAwards()
-    {
-        $userFiles = FileRecord::with('user')->with('achievements')
-            ->where('owner_id', Auth::User()->id)
-            ->where('doc_type_id', 2)
-            ->get();
-
-        $userTags = $this->retrieveTags();
-
-        return view('dashboard')
-            ->with('delReq', $userFiles)
-            ->with('userTags', $userTags)
-            ->with('screen', "admin");
-    }
-
-    public function appDelReq($id)
-    {
-        $achievement = Achievements::where('achievement_id', '=', $id)->firstOrFail();
-        $file = FileRecord::where('id', '=', $id)->firstOrFail();
-        $owner = User::where('id', '=', $file->owner_id)->firstOrFail();
+    public function appDelReq($id) {
+        $achievement = Achievements::where('achievement_id' , '=' , $id)
+                                   ->firstOrFail()
+        ;
+        $file = FileRecord::where('id' , '=' , $id)
+                          ->firstOrFail()
+        ;
+        $owner = User::where('id' , '=' , $file->owner_id)
+                     ->firstOrFail()
+        ;
 
         $data = [
-            'fileName' => $file->filename,];
-        Mail::queue('mail.confirmDelete', $data, function ($message) use (&$owner) {
-            $message->to($owner->email, $owner->fname)->subject('Delete request approved.');
+            'fileName' => $file->filename , ];
+        Mail::queue('mail.confirmDelete' , $data , function($message) use (&$owner) {
+            $message->to($owner->email , $owner->fname)
+                    ->subject('Delete request approved.')
+            ;
         });
 
         Storage::deleteDirectory($file->owner_id . $file->id . $file->filename);
@@ -206,43 +244,46 @@ class AdminController extends Controller {
         return redirect('/admin/delete');
     }
 
-    public function denDelReq($id)
-    {
-        $entry = Achievements::where('achievement_id', '=', $id)->firstOrFail();
-        $file = FileRecord::where('id', '=', $id)->firstOrFail();
-        $owner = User::where('id', '=', $file->owner_id)->firstOrFail();
+    public function denDelReq($id) {
+        $entry = Achievements::where('achievement_id' , '=' , $id)
+                             ->firstOrFail()
+        ;
+        $file = FileRecord::where('id' , '=' , $id)
+                          ->firstOrFail()
+        ;
+        $owner = User::where('id' , '=' , $file->owner_id)
+                     ->firstOrFail()
+        ;
         $entry->delete_pending = false;
         $entry->delete_details = "";
         $entry->save();
 
         $data = [
-            'fileName' => $file->filename,];
-        Mail::queue('mail.denyDelete', $data, function ($message) use (&$owner) {
-            $message->to($owner->email, $owner->fname)->subject('Delete request rejected.');
+            'fileName' => $file->filename , ];
+        Mail::queue('mail.denyDelete' , $data , function($message) use (&$owner) {
+            $message->to($owner->email , $owner->fname)
+                    ->subject('Delete request rejected.')
+            ;
         });
 
         return redirect('/admin/delete');
     }
 
-    private function retrieveTags()
-    {
+    private function retrieveTags() {
         $Tags = (array)json_decode(Auth::User()->user_tags);
-        $userTags = [];
+        $userTags = [ ];
 
         foreach ($Tags as $tag) {
-            $userTags[$tag] = $tag;
+            $userTags[ $tag ] = $tag;
         }
 
         return $userTags;
     }
 
-    private function checkAuth()
-    {
-        if (!(Auth::check() && Auth::user()->user_type_id == 1)) {
+    private function checkAuth() {
+        if (!( Auth::check() && Auth::user()->user_type_id == 1 )) {
             return "You are not allowed to see this.";
         }
-
-
     }
 
 }
