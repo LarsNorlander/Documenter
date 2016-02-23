@@ -66,6 +66,11 @@ class AdminController extends Controller {
 
     // End of the depts() function.
 
+    /*
+     * Just like the controllers before it. This fetches the users in the
+     * database and pushes the data to the controller.
+     */
+
     public function users() {
         $this->checkAuth();
 
@@ -88,6 +93,14 @@ class AdminController extends Controller {
             ;
     }
 
+    // End of users() function.
+
+    /*
+     * This function grabs all the delete request pending in the system.
+     * The data is then displayed by the application to await approval or
+     * rejection by the admin depending on the reason stated.
+     */
+
     public function delAwards() {
         $userFiles = FileRecord::with('user')
                                ->with('achievements')
@@ -105,6 +118,14 @@ class AdminController extends Controller {
             ;
     }
 
+    // End of delAwards function.
+
+    /*
+     * The addDepts function takes data from the add department form
+     * and puts it into the database. That's pretty much all there is
+     * to it.
+     */
+
     public function addDepts(Request $request) {
         $this->checkAuth();
         $name = $request->collegeName;
@@ -115,10 +136,23 @@ class AdminController extends Controller {
         return redirect('/admin/depts');
     }
 
+    // End of addDepts() function
+
+    /*
+     * The delDepts() department pretty much does what it says. It deletes
+     * the department given that a department does not have any members under
+     * it.
+     */
+
     public function delDepts($id) {
         $this->checkAuth();
         //Delete stuff
-        Department::destroy($id);
+        try{
+            Department::destroy($id);
+        } catch(\PDOException $e){
+            return "The department still has members enrolled in it.";
+        }
+
 
         return redirect('/admin/depts');
     }
@@ -280,10 +314,19 @@ class AdminController extends Controller {
         return $userTags;
     }
 
+    /*
+     * checkAuth() function checks to see if you are an administrator logged in
+     * to the system. If not, you are not allowed to do any of the administrator
+     * related tasks. All it does is do a check if you are not authorized, and if
+     * the condition is true. It will interrupt the function to
+     */
+
     private function checkAuth() {
         if (!( Auth::check() && Auth::user()->user_type_id == 1 )) {
             return "You are not allowed to see this.";
         }
     }
+
+    // End of checkAuth() function.
 
 }
