@@ -27,7 +27,7 @@ class AdminController extends Controller {
      */
 
     public function index() {
-        $this->checkAuth();
+        $this->checkAdmin();
         $allFiles = FileRecord::with('user')
                               ->get()
         ;
@@ -51,7 +51,7 @@ class AdminController extends Controller {
      */
 
     public function depts() {
-        $this->checkAuth();
+        $this->checkAdmin();
         $allDepts = Department::get();
 
         $userTags = $this->retrieveTags();
@@ -72,7 +72,7 @@ class AdminController extends Controller {
      */
 
     public function users() {
-        $this->checkAuth();
+        $this->checkAdmin();
 
         $allUsers = User::with('user_dept')
                         ->with('user_type')
@@ -102,6 +102,7 @@ class AdminController extends Controller {
      */
 
     public function delAwards() {
+        $this->checkAdmin();
         $userFiles = FileRecord::with('user')
                                ->with('achievements')
                                ->where('owner_id' , Auth::User()->id)
@@ -127,7 +128,7 @@ class AdminController extends Controller {
      */
 
     public function addDepts(Request $request) {
-        $this->checkAuth();
+        $this->checkAdmin();
         $name = $request->collegeName;
         $entry = new Department();
         $entry->name = $name;
@@ -145,17 +146,24 @@ class AdminController extends Controller {
      */
 
     public function delDepts($id) {
-        $this->checkAuth();
+        $this->checkAdmin();
         //Delete stuff
-        try{
+        try {
             Department::destroy($id);
-        } catch(\PDOException $e){
+        } catch (\PDOException $e) {
             return "The department still has members enrolled in it.";
         }
 
 
         return redirect('/admin/depts');
     }
+
+    // End of delDepts() method.
+
+    /*
+     * The addUser() function takes care of creating a new user account for the system
+     * This way, an administrator could enroll a new user to the system.
+     */
 
     public function addUser(Request $request) {
         $newUser = new User();
@@ -173,6 +181,15 @@ class AdminController extends Controller {
         return redirect('/admin/users');
     }
 
+    // End of addUser() function.
+
+    /*
+     * The editUser() function allows the admin (and supposedly the user)
+     * to edit the details of the user in question. This function grabs
+     * the user's data and puts it into a form for so that it could be
+     * edited.
+     */
+
     public function editUser($id) {
         $user = User::where('id' , $id)
                     ->firstOrFail()
@@ -186,6 +203,14 @@ class AdminController extends Controller {
             ->with('userTypes' , $userTypes)
             ;
     }
+
+    // End of editUser() function.
+
+    /*
+     * The commitEditUser() function takes all the details from the
+     * edit user form and commits them to the database. Once that's
+     * done, the user's details have been edited accordingly.
+     */
 
     public function commitEditUser(Request $request , $id) {
         $newUser = User::where('id' , $id)
@@ -205,6 +230,14 @@ class AdminController extends Controller {
         return redirect('/admin/users');
     }
 
+    // End or commitEditUser() function.
+
+    /*
+     * The editDept() function does the same thing as the editUser()
+     * function that it fills up a form for editing name of a
+     * department.
+     */
+
     public function editDept($id) {
         $departments = Department::where('id' , $id)
                                  ->firstOrFail()
@@ -213,6 +246,14 @@ class AdminController extends Controller {
         return view('displays.admin.editDept')
             ->with('department' , $departments);
     }
+
+    // End of editDept() function.
+
+    /*
+     * The commitEditDept() function does the same thing as the
+     * commitEditDept() function. It commits the changes made
+     * to the name of the department to the database.
+     */
 
     public function commitEditDept(Request $request , $id) {
         $departments = Department::where('id' , $id)
@@ -224,8 +265,17 @@ class AdminController extends Controller {
         return redirect('/admin/depts');
     }
 
+    // End of the commitEditDept() function.
+
+    /*
+     * The function lockUser() does what it says. It locks the user or
+     * unlocks them depending on the current status of the user. It
+     * then sends an email to the user concerned about the new status
+     * of their account.
+     */
+
     public function lockUser($id) {
-        $this->checkAuth();
+        $this->checkAdmin();
         $user = User::where('id' , '=' , $id)
                     ->firstOrFail()
         ;
@@ -251,6 +301,15 @@ class AdminController extends Controller {
 
         return redirect('/admin/users');
     }
+
+    // End of the lockUser() function.
+
+    /*
+     * The appDelReq() function is short for "Approve Delete Request."
+     * This function finalizes the deletion of a credential from the
+     * system and notifies the user through email that their delete
+     * request has been approved.
+     */
 
     public function appDelReq($id) {
         $achievement = Achievements::where('achievement_id' , '=' , $id)
@@ -278,6 +337,15 @@ class AdminController extends Controller {
         return redirect('/admin/delete');
     }
 
+    // End of the appDelRe() function.
+
+    /*
+     * The denDelReq() function is short for "Deny Delete Request"
+     * This method is triggered when the administrator rejects a
+     * delete request in case it was done by mistake or a user
+     * failed to provide a valid reason.
+     */
+
     public function denDelReq($id) {
         $entry = Achievements::where('achievement_id' , '=' , $id)
                              ->firstOrFail()
@@ -303,6 +371,13 @@ class AdminController extends Controller {
         return redirect('/admin/delete');
     }
 
+    // End of the denDelReq() function.
+
+    /*
+     * The retrieveTags method only serves to get the user's tags.
+     * The reason this is here is to pass the data into the view.
+     */
+
     private function retrieveTags() {
         $Tags = (array)json_decode(Auth::User()->user_tags);
         $userTags = [ ];
@@ -314,6 +389,8 @@ class AdminController extends Controller {
         return $userTags;
     }
 
+    // End of retrieveTags() function.
+
     /*
      * checkAuth() function checks to see if you are an administrator logged in
      * to the system. If not, you are not allowed to do any of the administrator
@@ -321,7 +398,7 @@ class AdminController extends Controller {
      * the condition is true. It will interrupt the function to
      */
 
-    private function checkAuth() {
+    private function checkAdmin() {
         if (!( Auth::check() && Auth::user()->user_type_id == 1 )) {
             return "You are not allowed to see this.";
         }
