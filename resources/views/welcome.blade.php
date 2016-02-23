@@ -43,7 +43,7 @@
     {{-- End of Header --}}
 
     {{-- Contents go here --}}
-    <div class="container" id="content">
+    <div class="container content">
         <div class="row">
             <div class="col-sm-12 col-md-12">
                 <h3 class="light-h3"><br/>Documenter. A document management system that makes sure your documents are
