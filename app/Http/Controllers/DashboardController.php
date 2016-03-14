@@ -16,6 +16,12 @@ class DashboardController extends Controller {
                                ->where('doc_type_id' , 1)
                                ->get()
         ;
+        $shareFiles = FileRecord::with('user')
+                                ->where('sharing' , 'LIKE' , "%" . Auth::User()->username . "%")
+                                ->where('doc_type_id' , 1)
+                                ->where('owner_id' , '!=' , Auth::User()->id)
+                                ->get()
+        ;
         $deptFiles = FileRecord::with('user')
                                ->where('sharing' , 'LIKE' , "%" . Auth::User()->user_dept->name . "%")
                                ->where('doc_type_id' , 1)
@@ -27,12 +33,6 @@ class DashboardController extends Controller {
                               ->where('doc_type_id' , 1)
                               ->where('owner_id' , '!=' , Auth::User()->id)
                               ->get()
-        ;
-        $shareFiles = FileRecord::with('user')
-                                ->where('sharing' , 'LIKE' , "%" . Auth::User()->username . "%")
-                                ->where('doc_type_id' , 1)
-                                ->where('owner_id' , '!=' , Auth::User()->id)
-                                ->get()
         ;
 
         $userTags = $this->retrieveTags();
