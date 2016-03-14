@@ -16,24 +16,24 @@
                 <div class="file-name" style="width:30%">
                     {{$user->user_type->name}}
                 </div>
-                {{--
+
                 <div class="file-name" style="width:30%">
                     @if($user->user_status_id == 1)
                         Active
                     @else
-                        Locked
+                        Deactivated
                     @endif
                 </div>
-                --}}
+
                 <div class="btn-group" style="text-align:left; width:10%">
                     <a href="/admin/edit/user/{{$user->id}}" class="btn btn-primary" id="editButton">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>
-                    {{--
+
                     <a href="/admin/user/lock/{{$user->id}}" class="btn btn-default" id="deleteButton">
                         <span class="glyphicon glyphicon-lock"></span>
                     </a>
-                    --}}
+
                 </div>
             </div>
         @endunless

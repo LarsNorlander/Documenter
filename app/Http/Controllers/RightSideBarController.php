@@ -36,22 +36,30 @@ class RightSideBarController extends Controller {
     }
 
     public function getDelReq($id){
-        $entry = Achievements::where('achievement_id', '=', $id)->firstOrFail();
+        $entry = Achievements::withTrashed()->where('achievement_id', '=', $id)->firstOrFail();
         $details = $entry->delete_details;
 
-        return view('nav.cards.deleteRequest')
-            ->with('details', $details)
-            ->with('id', $id);
+        if($entry->trashed()){
+            return view('nav.cards.deleteRestore')
+                ->with('details', $details)
+                ->with('id', $id);
+        }
+        else{
+            return view('nav.cards.deleteRequest')
+                ->with('details', $details)
+                ->with('id', $id);
+        }
+
     }
 
     public function getDetails($id)
     {
-        $entry = FileRecord::where('id', '=', $id)->firstOrFail();
+        $entry = FileRecord::withTrashed()->where('id', '=', $id)->firstOrFail();
 
         if ($entry->doc_type_id == 1)
             return view('nav.cards.fileInfo')->with('file', $entry);
         else{
-            $achievement = Achievements::where('achievement_id', '=', $id)->firstOrFail();
+            $achievement = Achievements::withTrashed()->where('achievement_id', '=', $id)->firstOrFail();
             return view('nav.cards.fileInfo')->with('file', $entry)
                 ->with('achievement', $achievement);
         }

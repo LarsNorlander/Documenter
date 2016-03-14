@@ -4,12 +4,8 @@ $(".file-item-even").click(function () {
     var id = $(this).attr("id");
     $(".file-selected").toggleClass("file-selected");
     $(this).toggleClass("file-selected");
-    if ($(this).find(".file-owner").text() != "Me") {
-        $("#documentOptions").hide(0);
-    }
-    else {
-        $("#documentOptions").show(0);
-    }
+    $("#documentOptions").show(0);
+
     $.ajax({
         type: 'get',
         url: '/sidebar/details/' + id,
@@ -28,26 +24,21 @@ $(".file-item-even").click(function () {
         }
     });
 
-    $.getJSON("/file/details/" + $(this).attr("id"), function (data) {
-        var obj = JSON.parse(data[0].sharing);
-        $("#Users").attr("value", obj.users);
-        $(".tagsinput").tagsinput();
-    });
     $("#no-content").hide(0);
 }).dblclick(function () {
     window.open("/file/" + $(this).attr("id"));
 });
 
-$(document).on('click', '.del-ver',(function () {
+$(document).on('click', '.del-ver', (function () {
     $("#fileDelForm").attr("action", "/file/del/" + $(this).attr("id"));
     $("#delFile").modal("show");
 }));
 
-$(document).on('click', '#tagButton',(function () {
+$(document).on('click', '#tagButton', (function () {
     $("#addTagToFile").modal("show");
 }));
 
-$(document).on('click', '#shareButton',(function () {
+$(document).on('click', '#shareButton', (function () {
     $("#fileShare").modal("show");
 }));
 

@@ -24,12 +24,15 @@ class DashboardController extends Controller {
         ;
         $deptFiles = FileRecord::with('user')
                                ->where('sharing' , 'LIKE' , "%" . Auth::User()->user_dept->name . "%")
+                               ->where('sharing' , 'NOT LIKE' , "%" . Auth::User()->username . "%")
                                ->where('doc_type_id' , 1)
                                ->where('owner_id' , '!=' , Auth::User()->id)
                                ->get()
         ;
         $orgFiles = FileRecord::with('user')
                               ->where('sharing' , 'LIKE' , "%\"mass\":\"1\"%")
+                              ->where('sharing' , 'NOT LIKE' , "%" . Auth::User()->user_dept->name . "%")
+                              ->where('sharing' , 'NOT LIKE' , "%" . Auth::User()->username . "%")
                               ->where('doc_type_id' , 1)
                               ->where('owner_id' , '!=' , Auth::User()->id)
                               ->get()
@@ -191,7 +194,7 @@ class DashboardController extends Controller {
     }
 
     public function search(Request $request) {
-        $tag = $request->Tags[0];
+        $tag = $request->Tags[ 0 ];
 
         return redirect('/dashboard/tags/' . $tag);
     }

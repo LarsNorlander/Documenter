@@ -36,12 +36,16 @@
                     <li><a href="/admin/depts">Departments</a></li>
                     <li><a href="/admin/users">Users</a></li>
                     <li><a href="/admin/delete">Delete Requests</a></li>
+                    <li><a href="/admin/deleted">Deleted Credentials</a></li>
                 </ul>
             </li>
         @endif
         @if(Auth::User()->user_type_id == 2)
             <li>
-               <a href="/dashboard/deptAwards">Dept Awards</a>
+               <a href="/dashboard/deptAwards">Dept Credentials</a>
+            </li>
+            <li>
+                <a href="/dashboard/deptArchived">Credential Archive</a>
             </li>
         @endif
         @if(Auth::User()->user_type_id == 2 and Auth::User()->user_dept_id == 2)

@@ -27,6 +27,8 @@
             @include('displays.admin.adminDisplay')
         @elseif($screen == "deptAwards")
             @include('displays.deptAwardsDisplay')
+        @elseif($screen == "deptArchive")
+            @include('displays.deptArchiveDisplay')
         @endif
     @else
         @include('displays.fileDisplay')

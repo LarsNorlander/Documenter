@@ -11,7 +11,16 @@
 
                 {!! Form::label("Users", "Share with users:") !!}
                 <br/>
-                <select name="Users[]" multiple="multiple" class="form-control multiselect multiselect-info">
+                <select name="Users[]" multiple="multiple" class="form-control multiselect multiselect-primary">
+                    @foreach($users as $user)
+                        <option value="{{$user->username}}" @if(in_array($user->username, $sharedUsers)) selected @endif>{{$user->username}}</option>
+                    @endforeach
+                </select>
+                <br/>
+
+                {!! Form::label("Editors", "Users that could edit:") !!}
+                <br/>
+                <select name="Editors[]" multiple="multiple" class="form-control multiselect multiselect-primary">
                     @foreach($users as $user)
                         <option value="{{$user->username}}" @if(in_array($user->username, $sharedUsers)) selected @endif>{{$user->username}}</option>
                     @endforeach
@@ -21,7 +30,7 @@
                 {!! Form::label("Departments", "Share with departments:") !!}
                 <br/>
 
-                <select name="Departments[]" multiple="multiple" class="form-control multiselect multiselect-info">
+                <select name="Departments[]" multiple="multiple" class="form-control multiselect multiselect-primary">
                     @foreach($departments as $department)
                         <option value="{{$department->name}}" @if(in_array($department->name, $sharedDepartments)) selected @endif>{{$department->name}}</option>
                     @endforeach

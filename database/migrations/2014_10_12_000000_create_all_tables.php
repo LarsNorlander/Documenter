@@ -38,6 +38,7 @@ class CreateAllTables extends Migration {
             $table->string('lname');
             $table->string('email')->unique();
             $table->string('password', 60);
+            $table->string('old_password', 60);
             $table->integer('user_status_id')->unsigned();
             $table->foreign('user_status_id')->references('id')->on('tbl_user_status');
             $table->integer('user_dept_id')->unsigned();
@@ -61,23 +62,16 @@ class CreateAllTables extends Migration {
             $table->string('filename');
             $table->string('mime');
             $table->integer('total_versions');
+            $table->json('version_details');
             $table->integer('public_version');
             $table->integer('owner_id')->unsigned();
             $table->foreign('owner_id')->references('id')->on('tbl_users');
             $table->integer('doc_type_id')->unsigned();
             $table->foreign('doc_type_id')->references('id')->on('tbl_doc_types');
             $table->json('sharing');
+            $table->json('user_editor');
             $table->json('tags');
-            $table->timestamps();
-        });
-
-        Schema::create('tbl_memos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->date('validity');
-            $table->longText('details');
-            $table->integer('memo_id')->unsigned();
-            $table->foreign('memo_id')->references('id')->on('tbl_file_records');
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -88,12 +82,12 @@ class CreateAllTables extends Migration {
             $table->string('type');
             $table->date('validity');
             $table->longText('details');
-            //$table->boolean('univ');
             $table->boolean('approved');
             $table->boolean('delete_pending');
             $table->longText('delete_details');
             $table->integer('achievement_id')->unsigned();
             $table->foreign('achievement_id')->references('id')->on('tbl_file_records');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -107,8 +101,6 @@ class CreateAllTables extends Migration {
     {
         //Pretty self-explanatory for these lines
         Schema::drop('tbl_achievements');
-
-        Schema::drop('tbl_memos');
 
         Schema::drop('tbl_file_records');
 

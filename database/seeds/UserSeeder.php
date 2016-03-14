@@ -46,7 +46,7 @@ class UserSeeder extends Seeder {
              'fname'          => 'Angeline',
              'lname'          => 'Gal',
              'email'          => 'lars.nrlndr+DevAdmin@gmail.com',
-             'password'       => bcrypt("aufadmin"),
+             'password'       => bcrypt("hrhead"),
              'user_dept_id'   => '2',
              'user_type_id'   => '2',
              'user_status_id' => '1',

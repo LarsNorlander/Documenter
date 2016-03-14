@@ -11,7 +11,6 @@ use App\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller {
 
@@ -119,6 +118,24 @@ class AdminController extends Controller {
     }
 
     // End of delAwards function.
+
+    public function deleted() {
+        $this->checkAdmin();
+        $userFiles = FileRecord::onlyTrashed()
+                               ->with('user')
+                               ->with('achievements')
+                               ->where('doc_type_id' , 2)
+                               ->get()
+        ;
+
+        $userTags = $this->retrieveTags();
+
+        return view('dashboard')
+            ->with('delReq' , $userFiles)
+            ->with('userTags' , $userTags)
+            ->with('screen' , 'admin')
+            ;
+    }
 
     /*
      * The addDepts function takes data from the add department form
@@ -281,6 +298,8 @@ class AdminController extends Controller {
 
         if ($user->user_status_id == 1) {
             $user->user_status_id = 2;
+            $user->old_password = $user->password;
+            $user->password = "locked";
 
             Mail::queue('mail.accLocked' , [ ] , function($message) use (&$user) {
                 $message->to($user->email , $user->fname)
@@ -289,6 +308,7 @@ class AdminController extends Controller {
             });
         } else {
             $user->user_status_id = 1;
+            $user->password = $user->old_password;
             Mail::queue('mail.accUnlocked' , [ ] , function($message) use (&$user) {
                 $message->to($user->email , $user->fname)
                         ->subject('Account Unlocked.')
@@ -329,7 +349,6 @@ class AdminController extends Controller {
             ;
         });
 
-        Storage::deleteDirectory($file->owner_id . $file->id . $file->filename);
         $achievement->delete();
         $file->delete();
 
@@ -371,6 +390,24 @@ class AdminController extends Controller {
     }
 
     // End of the denDelReq() function.
+
+    public function restore($id){
+        $achievement = Achievements::withTrashed()->where('achievement_id' , '=' , $id)
+                                   ->firstOrFail()
+        ;
+        $file = FileRecord::withTrashed()->where('id' , '=' , $id)
+                          ->firstOrFail()
+        ;
+
+        $achievement->restore();
+        $file->restore();
+        $achievement->delete_pending = false;
+        $achievement->delete_details = "";
+        $achievement->save();
+
+        return redirect('/admin/deleted');
+    }
+
 
     /*
      * The retrieveTags method only serves to get the user's tags.
