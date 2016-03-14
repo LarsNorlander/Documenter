@@ -241,4 +241,29 @@ class AchievementController extends Controller {
     }
 
     // End of decline() function.
+
+    public function getAll(){
+        $allFiles = FileRecord::with('user')->where('doc_type_id', 2)
+                              ->get()
+        ;
+
+        $userTags = $this->retrieveTags();
+
+        return view('dashboard')
+            ->with('allFiles' , $allFiles)
+            ->with('userTags' , $userTags)
+            ->with('screen' , "admin")
+            ;
+    }
+
+    private function retrieveTags() {
+        $Tags = (array)json_decode(Auth::User()->user_tags);
+        $userTags = [ ];
+
+        foreach ($Tags as $tag) {
+            $userTags[ $tag ] = $tag;
+        }
+
+        return $userTags;
+    }
 }

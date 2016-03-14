@@ -40,6 +40,7 @@
     @include('modals.fileNewVersionUpload')
     @include('modals.addTagModal')
     @include('modals.delReqAward')
+    @include('modals.searchTagModal')
     <div id="modalFileTag"></div>
 
 @stop

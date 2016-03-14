@@ -12,13 +12,15 @@
             </ul>
         </li>
         <li>
-            <a href="/dashboard/awards">Awards</a>
+            <a href="/dashboard/awards">Credentials</a>
         </li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tags <span class="caret"></span></a>
             <ul class="dropdown-menu palette-midnight-blue" role="menu">
                 <li><a href="#" data-toggle="modal" data-target="#addFileTag"><span
                                 class="glyphicon glyphicon-plus-sign"></span> New Tag</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#searchTag"><span
+                                class="glyphicon glyphicon-search"></span> Search Tag</a></li>
                 @foreach($userTags as $tag)
                     <li><a href="/dashboard/tags/{{$tag}}">{{$tag}}</a></li>
                 @endforeach

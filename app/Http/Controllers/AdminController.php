@@ -105,7 +105,6 @@ class AdminController extends Controller {
         $this->checkAdmin();
         $userFiles = FileRecord::with('user')
                                ->with('achievements')
-                               ->where('owner_id' , Auth::User()->id)
                                ->where('doc_type_id' , 2)
                                ->get()
         ;

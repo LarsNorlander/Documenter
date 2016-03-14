@@ -99,7 +99,18 @@ $(window).resize(function () {
 });
 
 Dropzone.options.myAwesomeDropzone = {
-    acceptedFiles: "application/pdf"
+
 };
+
+var last_valid_selection = null;
+$('#searchTags').change(function(event) {
+    if ($(this).val().length > 1) {
+        alert('You can only choose 1!');
+        $(this).val(last_valid_selection);
+        $("select").select2({dropdownCssClass: 'dropdown-inverse'});
+    } else {
+        last_valid_selection = $(this).val();
+    }
+});
 
 // Section for sidebare

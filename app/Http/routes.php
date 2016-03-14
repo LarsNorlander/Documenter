@@ -35,7 +35,7 @@ Route::get('/dashboard/shared/', 'DashboardController@shared');
 Route::get('/dashboard/dept/', 'DashboardController@dept');
 Route::get('/dashboard/org/', 'DashboardController@org');
 Route::get('/dashboard/deptAwards', 'DepartmentHeadController@deptAwards');
-
+Route::post('/tag/search', "DashboardController@search");
 
 Route::post('/user/addTag', 'UserController@addTag');
 
@@ -76,3 +76,5 @@ Route::get('/admin/delreq/deny/{id}', 'AdminController@denDelReq');
 Route::get('/hr/verify', 'DashboardController@getUnverified');
 Route::get('/hr/approve/{id}', 'AchievementController@approve');
 Route::get('/hr/decline/{id}', 'AchievementController@decline');
+Route::get('/hr/awards', "AchievementController@getAll");
+

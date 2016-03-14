@@ -1,4 +1,12 @@
 <div class="file-list">
+
+    <div class="file-list-head">
+        <div class="file-name">Name</div>
+        <div class="file-owner">Owner</div>
+        <div class="file-edited">Version</div>
+        <div class="file-edited">Last Modified</div>
+        <div class="file-actions"></div>
+        </div>
     {{-- File header --}}
     @if((isset($userFiles) and count($userFiles)   > 0)     or
         (isset($deptFiles) and count($deptFiles)   > 0)     or
@@ -13,7 +21,8 @@
             @foreach($userFiles as $file)
                 <div class="file-item-even" id="{{ $file->id }}">
                     <div class="file-name">{{ $file->filename }}</div>
-                    <div class="file-owner">Me</div>
+                    <div class="file-owner"><Me></Me></div>
+                    <div class="file-pub">{{ $file->public_version }}</div>
                     <div class="file-edited">
                         {{ date('F d, Y', strtotime($file->updated_at)) }}
                     </div>

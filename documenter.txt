@@ -67,3 +67,28 @@ Legend
 [ Department Member ] --Tag document request-->   [ (28.0) Process delete file request ] --File query, Tag information--> [ D1 | tbl_file_records ]
 
 [ Public User ] --File download request--> [ (29.0) Process file download request ] --File query--> [ D1 | tbl_file_records ] --File--> [ Public user ]
+
+
+USE CASE
+
+Admin/DeptMem/DeptHead  --------> Upload Documents
+Admin/DeptMem/DeptHead  --------> Delete Documents
+Admin/DeptMem/DeptHead  --------> Manage Document Versions
+Admin/DeptMem/DeptHead  --------> Tag Documents
+Admin/DeptMem/DeptHead  --------> Share Documents
+Admin/DeptMem/DeptHead  --------> Upload Credentials
+Admin/DeptMem/DeptHead  --------> Create User Defined tags
+Admin/DeptMem/DeptHead  --------> View document list
+Admin/DeptMem/DeptHead  --------> View by tag ----Extends----> View document list
+Admin/DeptMem/DeptHead  --------> Download documents
+
+DeptMem/DeptHead  --------> Delete Credentials ---Extends----> Delete Documents
+                                               ---Implements---> Send delete request
+
+Admin --------> Create Users
+Admin --------> Create Departments
+Admin --------> Edit Users
+Admin --------> Edit Departments
+Admin --------> Lock Users
+Admin --------> Delete Departments Users
+Admin --------> Approve delete request ----Implements----> Delete File

@@ -4,19 +4,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Upload an Achievement</h4>
+                <h4 class="modal-title">Upload a Credential</h4>
             </div>
             {!! Form::open(['url' => '/file/upload/achievement', 'id' => 'fileTagForm', 'files' => true]) !!}
             <div class="modal-body">
-                {!! Form::label("file", "Choose File for Achievement:") !!}
+                <p style="font-size: 16px">* Denotes a required field.</p>
+                {!! Form::label("file", "Choose File for Credential*") !!}
                 {!! Form::file("file", ['class' => 'form-control', 'required', 'accept'=>'.pdf']) !!}
-                {!! Form::label("name", "Title of Achievement") !!}
+                {!! Form::label("name", "Title of Achievement*") !!}
                 {!! Form::text("name", null, ['class' => 'form-control', 'required']) !!}
-                {!! Form::label("type", "Specify what kind of award it is") !!}
+                {!! Form::label("type", "Specify what kind of award it is*") !!}
                 {!! Form::text("type", null, ['class' => 'form-control', 'required']) !!}
-                {!! Form::label("received", "Date Received") !!}
+                {!! Form::label("received", "Date Received*") !!}
                 <input id="received" name="received" type="date" class="form-control" required>
-                {!! Form::label("validity", "Valid till (set to the same date if it does not apply)") !!}
+                {!! Form::label("validity", "Valid till (set to the same date if it does not apply)*") !!}
                 <input id="validity" name="validity" type="date" class="form-control">
                 {!! Form::label("details", "Additional details") !!}
                 {!! Form::textarea("details", null, ['class'=>'form-control']) !!}

@@ -43,3 +43,7 @@
         </div>
     @endunless
 </div>
+
+<script>
+    alert("Sharing is here!");
+</script>

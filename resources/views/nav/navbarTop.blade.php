@@ -10,7 +10,7 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="#" data-toggle="modal" data-target="#uploadFile">Documents</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#uploadAchievement">Award</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#uploadAchievement">Credential</a></li>
                 </ul>
             </li>
             <li class="dropdown">
