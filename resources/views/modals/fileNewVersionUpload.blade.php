@@ -11,8 +11,9 @@
                                 'files' => true]) !!}
             <div class="modal-body">
                 {!! Form::label('updateFile', 'Select a file:') !!}
-                {!! Form::file('updateFile', ['class' => 'form-control','accept' => '.pdf', 'required']) !!}
-
+                {!! Form::file('updateFile', ['class' => 'form-control', 'required']) !!}
+                {!! Form::label('updateDetails', "What's new?") !!}
+                {!! Form::textArea('updateDetails', null, ['class' => 'form-control', 'required']) !!}
             </div>
             <div class="modal-footer">
                 {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}

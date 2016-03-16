@@ -9,6 +9,7 @@ $(".file-item-even").click(function () {
     }
     else {
         $("#documentOptions").show(0);
+        $("#sharingCard").show(0);
     }
     $("#fileSharingForm").attr("action", "/file/sharing/" + $(this).attr("id"));
     $("#fileDelForm").attr("action", "/file/del/" + $(this).attr("id"));
@@ -69,6 +70,11 @@ $(".file-item-even").click(function () {
         $("#Users").attr("value", obj.users);
         $(".tagsinput").tagsinput();
     });
+
+    if($(this).hasClass("editable")){
+        $("#documentOptions").show(0);
+        $("#sharingCard").hide(0);
+    }
     $("#no-content").hide(0);
 }).dblclick(function () {
     window.open("/file/" + $(this).attr("id"));

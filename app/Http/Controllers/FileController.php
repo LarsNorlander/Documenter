@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\FileRecord;
 use App\Http\Requests;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,17 @@ class FileController extends Controller {
             $sharing = json_encode($sharing_array);
             $entry->sharing = $sharing;
             $entry->doc_type_id = 1;
+
+
+            $version = $entry->total_versions - 1;
+            $note = "Initial upload";
+            $date = Carbon::now();
+            $user = Auth::User()->fname . ' ' . Auth::User()->lname;
+
+            $versionArray = [$version => array('user' => $user, 'stamp' => $date, 'note'=>$note)];
+            $finalVer = json_encode($versionArray);
+            $entry->version_details = $finalVer;
+
             $entry->save();
 
             Storage::disk('local')
@@ -67,11 +79,13 @@ class FileController extends Controller {
         ;
 
         $sharing = (array)json_decode($entry->sharing);
+        $editor = (array)json_decode($entry->user_editor);
 
         if (auth::check()) {
             if ($entry->owner_id == Auth::user()->id or
                 auth::User()->user_type_id == 1 or
                 in_array(Auth::user()->username , $sharing[ 'users' ]) or
+                in_array(Auth::user()->username , $editor) or
                 in_array(Auth::user()->user_dept->name , $sharing[ 'departments' ]) or
                 $sharing[ 'mass' ] == 1
             ) {
@@ -107,10 +121,22 @@ class FileController extends Controller {
                            ->firstOrFail()
         ;
         Storage::disk('local')
-               ->put(Auth::User()->id . $entry->id . $entry->filename . "/" . ( $entry->total_versions + 1 ) , File::get($file))
+               ->put($entry->owner_id . $entry->id . $entry->filename . "/" . ( $entry->total_versions + 1 ) , File::get($file))
         ;
         $entry->total_versions = $entry->total_versions + 1;
         $entry->public_version = $entry->total_versions;
+
+        $docVersions = (array)json_decode($entry->version_details);
+
+        $version = $entry->total_versions - 1;
+        $note = $request->updateDetails;
+        $date = Carbon::now();
+        $user = Auth::User()->fname . ' ' . Auth::User()->lname;
+
+        $versionArray = [$version => array('user' => $user, 'stamp' => $date, 'note'=>$note)];
+        $finalVer = json_encode(array_merge($docVersions, $versionArray));
+        $entry->version_details = $finalVer;
+
         $entry->save();
 
         $admins = User::get()
@@ -236,4 +262,16 @@ class FileController extends Controller {
 
         return redirect('/');
     }
+
+    public function getHistory($id){
+        $entry = FileRecord::where('id' , '=' , $id)
+                           ->firstOrFail()
+        ;
+
+        $audit = (array) json_decode($entry->version_details);
+        $filename = $entry->filename;
+        //return $audit;
+        return view("audit")->with('audit', $audit)->with('filename', $filename);
+    }
+
 }

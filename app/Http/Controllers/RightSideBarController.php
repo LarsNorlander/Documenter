@@ -14,6 +14,7 @@ class RightSideBarController extends Controller {
     public function getVersions($id)
     {
         $entry = FileRecord::where('id', '=', $id)->firstOrFail();
+        $owner = $entry->owner_id;
         $files = Storage::allFiles($entry->owner_id . $entry->id . $entry->filename . "/");
         $docType = $entry->doc_type_id;
         $i = 0;
@@ -24,15 +25,18 @@ class RightSideBarController extends Controller {
 
         return View::make('nav.cards.fileVersions')->with('files', $files)
             ->with('id', $id)
+            ->with('owner', $owner)
             ->with('docType', $docType);
     }
 
     public function getSharing($id)
     {
         $entry = FileRecord::where('id', '=', $id)->firstOrFail();
-        $sharing = (array)json_decode($entry->sharing);
+        $sharing = (array) json_decode($entry->sharing);
+        $editors = (array) json_decode($entry->user_editor);
 
-        return view('nav.cards.fileSharing')->with('sharing', $sharing);
+        return view('nav.cards.fileSharing')->with('sharing', $sharing)
+            ->with('editors', $editors);
     }
 
     public function getDelReq($id){

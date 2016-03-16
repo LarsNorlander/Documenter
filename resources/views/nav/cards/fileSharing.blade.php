@@ -13,15 +13,21 @@
         </table>
         <hr/>
     </div>
-    @if(count($sharing['users']) == 0 and count($sharing['departments']) == 0 and  $sharing['mass'] == "0")
+    @if(count($sharing['users']) == 0 and count($sharing['departments']) == 0 and  $sharing['mass'] == "0" and count($editors) == 0)
         <div>
             <p><span class="glyphicon glyphicon-lock"></span> Only Me</p>
         </div>
     @endif
 
+    @unless(count($editors) == 0)
+        <div>
+            <p><span class="glyphicon glyphicon-user"></span> Users could edit</p>
+        </div>
+    @endunless
+
     @unless(count($sharing['users']) == 0)
         <div>
-            <p><span class="glyphicon glyphicon-user"></span> Shared with users</p>
+            <p><span class="glyphicon glyphicon-user"></span> Users could view</p>
         </div>
     @endunless
 

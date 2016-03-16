@@ -4,7 +4,10 @@
             <tr>
                 <td><h4>Versions</h4></td>
                 <td>
-                    <button class="btn btn-primary" style="float: right" data-toggle="modal"
+                    <a href="/file/history/{{$id}}" class="btn btn-primary" style="float: right;"
+                       id="versionHistory" target="_blank"><span
+                                class="glyphicon glyphicon-time"></span></a>
+                    <button class="btn btn-primary" style="float: right; margin-right: 2px" data-toggle="modal"
                             data-target="#updateFile" id="addVerButton"><span
                                 class="glyphicon glyphicon-cloud-upload"></span></button>
                 </td>
@@ -20,8 +23,10 @@
                                     class="glyphicon glyphicon-check"></span></a>
                         <a href="/file/{{$id}}/{{$file}}" target="_blank" class="btn btn-primary"><span
                                     class="glyphicon glyphicon-eye-open"></span></a>
-                        <button id="{{$id}}/{{$file}}" class="btn btn-danger del-ver"><span
-                                    class="glyphicon glyphicon-trash"></span></button>
+                        @if(Auth::User()->id == $owner)
+                            <button id="{{$id}}/{{$file}}" class="btn btn-danger del-ver"><span
+                                        class="glyphicon glyphicon-trash"></span></button>
+                        @endif
                     </div>
                 </div>
             @endforeach

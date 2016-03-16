@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <p style="font-size: 16px">* Denotes a required field.</p>
                 {!! Form::label("file", "Choose File for Credential*") !!}
-                {!! Form::file("file", ['class' => 'form-control', 'required', 'accept'=>'.pdf']) !!}
+                {!! Form::file("file", ['class' => 'form-control', 'required']) !!}
                 {!! Form::label("name", "Title of Achievement*") !!}
                 {!! Form::text("name", null, ['class' => 'form-control', 'required']) !!}
                 {!! Form::label("type", "Specify what kind of award it is*") !!}

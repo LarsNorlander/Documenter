@@ -35,17 +35,21 @@ class ModalController extends Controller {
     {
         $entry = FileRecord::where('id', '=', $id)->firstOrFail();
         $rawSharing = (array)json_decode($entry->sharing);
+        $docType = $entry->doc_type_id;
 
         $users = User::get();
         $sharedUsers = (array) $rawSharing['users'];
 
         $departments = Department::get();
         $sharedDepartments = (array) $rawSharing['departments'];
+        $editors = (array) json_decode($entry->user_editor);
 
         $mass = $rawSharing['mass'];
 
         return view('modals.sharingModal')
             ->with('sharedUsers', $sharedUsers)
+            ->with('editors', $editors)
+            ->with('docType', $docType)
             ->with('users', $users)
             ->with('departments', $departments)
             ->with('sharedDepartments', $sharedDepartments)

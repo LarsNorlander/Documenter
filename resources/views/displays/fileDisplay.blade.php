@@ -10,6 +10,7 @@
     {{-- File header --}}
     @if((isset($userFiles) and count($userFiles)   > 0)     or
         (isset($deptFiles) and count($deptFiles)   > 0)     or
+        (isset($editableFiles) and count($editableFiles)   > 0)     or
         (isset($orgFiles) and count($orgFiles)    > 0)     or
         (isset($shareFiles) and count($shareFiles)  > 0)     )
 
@@ -41,10 +42,24 @@
             @endforeach
         @endif
 
-        {{-- User Owned Files --}}
+        {{-- User Shared Files --}}
+        @if(isset($editableFiles) and count($editableFiles) > 0)
+            <div class="file-header">
+                Shared with me (edit)
+            </div>
+            @foreach($editableFiles as $file)
+                <div class="file-item-even editable" id="{{ $file->id }}">
+                    <div class="file-name">{{ $file->filename }}</div>
+                    <div class="file-owner">{{ $file->user->fname . " " . $file->user->lname }}</div>
+                    <div class="file-edited">{{ date('F d, Y', strtotime($file->updated_at))}}</div>
+                </div>
+            @endforeach
+        @endif
+
+        {{-- User Shared Files --}}
         @if(isset($shareFiles) and count($shareFiles) > 0)
             <div class="file-header">
-                Shared with me
+                Shared with me (view)
             </div>
             @foreach($shareFiles as $file)
                 <div class="file-item-even" id="{{ $file->id }}">

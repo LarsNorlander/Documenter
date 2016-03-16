@@ -45,6 +45,7 @@ Route::get('/modal/addTag/{id}' , 'ModalController@addTagModal');
 Route::get('/modal/sharing/{id}' , 'ModalController@sharing');
 
 Route::get('/file/details/{id}' , 'FileController@getDetails');
+Route::get('/file/history/{id}', 'FileController@getHistory');
 Route::post('/file/update/{id}' , 'FileController@updateFile');
 Route::post('/file/sharing/{id}' , 'FileController@shareFile');
 Route::post('/file/del/{id}' , 'FileController@deleteFile');

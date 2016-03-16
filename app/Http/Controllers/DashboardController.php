@@ -22,6 +22,12 @@ class DashboardController extends Controller {
                                 ->where('owner_id' , '!=' , Auth::User()->id)
                                 ->get()
         ;
+        $editableFiles = FileRecord::with('user')
+                                   ->where('user_editor' , 'LIKE' , "%" . Auth::User()->username . "%")
+                                   ->where('doc_type_id' , 1)
+                                   ->where('owner_id' , '!=' , Auth::User()->id)
+                                   ->get()
+        ;
         $deptFiles = FileRecord::with('user')
                                ->where('sharing' , 'LIKE' , "%" . Auth::User()->user_dept->name . "%")
                                ->where('sharing' , 'NOT LIKE' , "%" . Auth::User()->username . "%")
@@ -44,6 +50,7 @@ class DashboardController extends Controller {
             ->with('userFiles' , $userFiles)
             ->with('orgFiles' , $orgFiles)
             ->with('shareFiles' , $shareFiles)
+            ->with('editableFiles' , $editableFiles)
             ->with('deptFiles' , $deptFiles)
             ->with('userTags' , $userTags)
             ;

@@ -18,15 +18,16 @@
                 </select>
                 <br/>
 
+                @if($docType == 1)
                 {!! Form::label("Editors", "Users that could edit:") !!}
                 <br/>
                 <select name="Editors[]" multiple="multiple" class="form-control multiselect multiselect-primary">
                     @foreach($users as $user)
-                        <option value="{{$user->username}}" @if(in_array($user->username, $sharedUsers)) selected @endif>{{$user->username}}</option>
+                        <option value="{{$user->username}}" @if(in_array($user->username, $editors)) selected @endif>{{$user->username}}</option>
                     @endforeach
                 </select>
                 <br/>
-
+                @endif
                 {!! Form::label("Departments", "Share with departments:") !!}
                 <br/>
 
