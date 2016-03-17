@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Tag This Document</h4>
+                <h4 class="modal-title">Search Tags</h4>
             </div>
             {!! Form::open(['url' => '/tag/search', 'id' => 'searchTagForm']) !!}
             <div class="modal-body">
