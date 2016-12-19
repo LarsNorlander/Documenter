@@ -64,7 +64,7 @@ Created as a requirement for Software Engineering
 
 	This will generate the tables needed and create an admin user with the username and password of admin.
 
-6.	Start up the server. This could be done in one of two way. For a local server, simply run the command:
+6.	Start up the server. This could be done in one of two ways. For a local server, simply run the command:
 
 	```
 	php artisan serve
