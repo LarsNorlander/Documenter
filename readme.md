@@ -4,6 +4,10 @@ Documenter is a web app designed to handle documents, keep them secure, and make
 
 Created as a requirement for Software Engineering
 
+## Archived Project
+This project was done back in my college years and was my first large system. It was also my first Laravel project. So given
+that, it's horrible. I have no plans of updating this anymore and so I am archiving this project.
+
 ## Requirements
 
 * PHP >= 5.5.9
@@ -86,5 +90,4 @@ Created as a requirement for Software Engineering
 
 ## Some Facts
 * Laravel Version: 5.1
-* A few kinks here and there but very usable (Please report bugs! Thanks!)
-* Credentials feature planned to be removed
+* A few kinks here and there but very usable.
